@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { DeckPageClient } from "@/components/deck/DeckPageClient";
 
 export const metadata: Metadata = {
-  title: "IMANI — Building Africa's Settlement Network",
+  title: "Motheo Proposal — DHL Express Lesotho",
   description:
-    "IMANI investor deck. Building regulated settlement infrastructure that enables businesses, financial institutions, payment providers, and governments to move value across African markets.",
+    "DHL Express Lesotho proposal for Motheo Compliance Platform SAP integration and Lekuka e-invoicing implementation by Infinity Business Dynamics.",
   alternates: { canonical: "/" },
   robots: { index: false, follow: false },
 };

@@ -12,7 +12,7 @@ export function DeckProgressBar({ current, total }: DeckProgressBarProps) {
 
   return (
     <div
-      className="relative z-[70] h-[3px] w-full shrink-0 bg-white/[0.06]"
+      className="relative z-[70] h-[3px] w-full shrink-0 bg-[color:var(--gms-border)]"
       role="progressbar"
       aria-valuenow={current + 1}
       aria-valuemin={1}
@@ -20,7 +20,7 @@ export function DeckProgressBar({ current, total }: DeckProgressBarProps) {
       aria-label="Presentation progress"
     >
       <motion.div
-        className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#56D6C2] via-[#6ee0cd] to-[#a4ede1] shadow-[0_0_14px_rgba(86,214,194,0.55)]"
+        className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#34216B] via-[#34216B] to-[#F41C28] shadow-[0_0_10px_rgba(244,28,40,0.25)]"
         initial={false}
         animate={{ width: `${progress}%` }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}

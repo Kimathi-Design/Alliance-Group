@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Jost } from "next/font/google";
+import { ASSETS } from "@/lib/assets";
 import "./globals.css";
 
 const jost = Jost({
@@ -10,21 +11,21 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "IMANI — Investor Deck",
+  title: "DHL Express Lesotho — Motheo Compliance Platform Proposal",
   description:
-    "Building Africa's settlement network — regulated infrastructure for cross-border commerce.",
+    "SAP Integration & Lekuka e-Invoicing Implementation — Infinity Business Dynamics.",
   robots: { index: false, follow: false },
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: ASSETS.brands.ibdFavicon,
+    apple: ASSETS.brands.ibdFavicon,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0D0F1A",
+  themeColor: "#F5F7FB",
   width: "device-width",
   initialScale: 1,
-  colorScheme: "dark",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -33,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jost.variable} dark`}>
+    <html lang="en" className={`${jost.variable} light`}>
       <body className="relative min-h-screen antialiased">{children}</body>
     </html>
   );

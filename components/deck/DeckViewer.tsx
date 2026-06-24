@@ -11,9 +11,9 @@ import { flushSync } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Download, Loader2 } from "lucide-react";
 import { renderDeckSlide } from "@/components/deck/DeckSlides";
-import { DeckLogo } from "@/components/deck/DeckLogo";
 import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
 import { DeckProgressBar } from "@/components/deck/DeckProgressBar";
+import { IbdMark } from "@/components/deck/IbdMark";
 import {
   SLIDE_COUNT,
   SLIDE_HEIGHT,
@@ -138,7 +138,7 @@ export function DeckViewer() {
   return (
     <div
       ref={containerRef}
-      className="deck-viewer fixed inset-0 z-[60] flex flex-col bg-[#070810]"
+      className="deck-viewer fixed inset-0 z-[60] flex flex-col bg-[color:var(--ibd-gray)]"
     >
       {scale !== null && (
         <DeckProgressBar current={current} total={SLIDE_COUNT} />
@@ -170,7 +170,7 @@ export function DeckViewer() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="deck-stage h-full w-full rounded-lg shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
+                  className="deck-stage h-full w-full rounded-lg shadow-[0_24px_80px_-20px_rgba(13,15,26,0.18)]"
                 >
                   {renderDeckSlide(current)}
                 </motion.div>
@@ -183,14 +183,11 @@ export function DeckViewer() {
       <nav
         ref={navRef}
         aria-label="Deck navigation"
-        className="flex shrink-0 items-center justify-between gap-4 border-t border-white/8 bg-[#0a0c14]/90 px-6 py-3 backdrop-blur-xl"
+        className="flex shrink-0 items-center justify-between gap-4 border-t border-[color:var(--gms-border)] bg-white/95 px-6 py-3 backdrop-blur-xl"
       >
         <div className="flex min-w-0 items-center gap-3">
-          <DeckLogo variant="nav" />
-          <span className="shrink-0 text-[13px] font-semibold tracking-[0.2em] text-[#56D6C2] uppercase">
-            IMANI
-          </span>
-          <span className="truncate text-[13px] text-white/50">
+          <IbdMark size="md" />
+          <span className="truncate text-[13px] text-[color:var(--gms-text-muted)]">
             {slideTitles[current]}
           </span>
         </div>
@@ -202,7 +199,7 @@ export function DeckViewer() {
             disabled={exporting || scale === null}
             aria-label="Export deck as PDF"
             title="Export deck as PDF"
-            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-white/70 transition hover:border-white/20 hover:bg-white/[0.08] disabled:opacity-30"
+            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
           >
             {exporting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -215,11 +212,11 @@ export function DeckViewer() {
             onClick={prev}
             disabled={current === 0}
             aria-label="Previous slide"
-            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-white/70 transition hover:border-white/20 hover:bg-white/[0.08] disabled:opacity-30"
+            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <span className="min-w-[72px] text-center text-[13px] tabular-nums text-white/60">
+          <span className="min-w-[72px] text-center text-[13px] tabular-nums text-[color:var(--gms-text-muted)]">
             {String(current + 1).padStart(2, "0")} / {SLIDE_COUNT}
           </span>
           <button
@@ -227,7 +224,7 @@ export function DeckViewer() {
             onClick={next}
             disabled={current === SLIDE_COUNT - 1}
             aria-label="Next slide"
-            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-white/70 transition hover:border-white/20 hover:bg-white/[0.08] disabled:opacity-30"
+            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

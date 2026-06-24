@@ -1,5 +1,9 @@
 import { toPng } from "html-to-image";
-import { jsPDF } from "jspdf";
+import { PDFDocument } from "pdf-lib";
+import {
+  appendices,
+  getAppendixIndexForSlide,
+} from "@/lib/deck-content";
 
 export type ExportDeckPdfOptions = {
   slideCount: number;
@@ -31,24 +35,51 @@ export async function waitForSlideReady(root: HTMLElement | null) {
   );
 }
 
+async function appendAppendixPages(
+  pdfDoc: PDFDocument,
+  appendixIndex: number,
+) {
+  const appendix = appendices[appendixIndex];
+  const response = await fetch(appendix.file);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${appendix.file}`);
+  }
+
+  const appendixBytes = await response.arrayBuffer();
+  const appendixPdf = await PDFDocument.load(appendixBytes);
+  const copied = await pdfDoc.copyPages(
+    appendixPdf,
+    appendixPdf.getPageIndices(),
+  );
+  copied.forEach((page) => pdfDoc.addPage(page));
+}
+
+function downloadPdf(bytes: Uint8Array, filename: string) {
+  const blob = new Blob([Uint8Array.from(bytes)], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
 export async function exportDeckToPdf({
   slideCount,
   width,
   height,
-  filename = "IMANI-Investor-Deck.pdf",
+  filename = "DHL-Motheo-Proposal.pdf",
   renderSlide,
   onProgress,
   settleMs = () => 400,
 }: ExportDeckPdfOptions) {
-  const pdf = new jsPDF({
-    orientation: "landscape",
-    unit: "px",
-    format: [width, height],
-    compress: true,
-  });
+  const pdfDoc = await PDFDocument.create();
+  let progressStep = 0;
+  const totalSteps = slideCount + appendices.length;
 
   for (let i = 0; i < slideCount; i++) {
-    onProgress?.(i + 1, slideCount);
+    progressStep += 1;
+    onProgress?.(progressStep, totalSteps);
 
     const el = await renderSlide(i);
     if (!el) {
@@ -69,12 +100,24 @@ export async function exportDeckToPdf({
       includeQueryParams: true,
     });
 
-    if (i > 0) {
-      pdf.addPage([width, height], "landscape");
-    }
+    const pngBytes = await fetch(dataUrl).then((response) => response.arrayBuffer());
+    const image = await pdfDoc.embedPng(pngBytes);
+    const page = pdfDoc.addPage([width, height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width,
+      height,
+    });
 
-    pdf.addImage(dataUrl, "PNG", 0, 0, width, height, undefined, "FAST");
+    const appendixIndex = getAppendixIndexForSlide(i);
+    if (appendixIndex !== null) {
+      progressStep += 1;
+      onProgress?.(progressStep, totalSteps);
+      await appendAppendixPages(pdfDoc, appendixIndex);
+    }
   }
 
-  pdf.save(filename);
+  const bytes = await pdfDoc.save();
+  downloadPdf(bytes, filename);
 }

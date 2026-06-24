@@ -7,24 +7,21 @@ import {
   useRef,
   useState,
 } from "react";
-import { flushSync } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Download, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { renderDeckSlide } from "@/components/deck/DeckSlides";
 import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
 import { DeckProgressBar } from "@/components/deck/DeckProgressBar";
 import { IbdMark } from "@/components/deck/IbdMark";
+import { ASSETS } from "@/lib/assets";
 import {
-  APPENDIX_START_SLIDE,
   SLIDE_COUNT,
   SLIDE_HEIGHT,
   SLIDE_WIDTH,
   slideTitles,
 } from "@/lib/deck-content";
-import { downloadPdf, exportDeckToPdf } from "@/lib/export-deck-pdf";
 
-const EXPORT_FILENAME = "DHL-Motheo-Proposal.pdf";
-
+const PROPOSAL_FILENAME = "DHL-Motheo-Proposal.pdf";
 const FIT_MARGIN = 20;
 
 function computeDeckScale(navHeight: number, container?: HTMLElement | null) {
@@ -36,19 +33,21 @@ function computeDeckScale(navHeight: number, container?: HTMLElement | null) {
   return Math.min(availW / SLIDE_WIDTH, availH / SLIDE_HEIGHT);
 }
 
+function downloadProposalPdf() {
+  const anchor = document.createElement("a");
+  anchor.href = ASSETS.proposalPdf;
+  anchor.download = PROPOSAL_FILENAME;
+  anchor.rel = "noopener";
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+}
+
 export function DeckViewer() {
   const [current, setCurrent] = useState(0);
   const [scale, setScale] = useState<number | null>(null);
-  const [exporting, setExporting] = useState(false);
-  const [exportSlideIndex, setExportSlideIndex] = useState<number | null>(null);
-  const [exportProgress, setExportProgress] = useState<{
-    current: number;
-    total: number;
-  } | null>(null);
-  const [exportReadyUrl, setExportReadyUrl] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
-  const exportHostRef = useRef<HTMLDivElement>(null);
 
   const goTo = useCallback((index: number) => {
     setCurrent(Math.max(0, Math.min(SLIDE_COUNT - 1, index)));
@@ -56,65 +55,9 @@ export function DeckViewer() {
 
   const prev = useCallback(() => goTo(current - 1), [current, goTo]);
   const next = useCallback(() => goTo(current + 1), [current, goTo]);
-
-  const handleExportPdf = useCallback(async () => {
-    if (exporting) return;
-
-    setExporting(true);
-    setExportProgress(null);
-    if (exportReadyUrl) {
-      URL.revokeObjectURL(exportReadyUrl);
-      setExportReadyUrl(null);
-    }
-    document.documentElement.dataset.deckExport = "true";
-
-    try {
-      const bytes = await exportDeckToPdf({
-        slideCount: APPENDIX_START_SLIDE,
-        width: SLIDE_WIDTH,
-        height: SLIDE_HEIGHT,
-        onProgress: (current, total) => {
-          setExportProgress({ current, total });
-        },
-        renderSlide: async (index) => {
-          flushSync(() => {
-            setExportSlideIndex(index);
-          });
-          await new Promise<void>((resolve) => {
-            requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-          });
-          return exportHostRef.current?.querySelector(
-            "section.deck-slide",
-          ) as HTMLElement | null;
-        },
-        settleMs: (index) => (index === 0 ? 500 : 0),
-      });
-
-      const blob = new Blob([Uint8Array.from(bytes)], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      setExportReadyUrl(url);
-      downloadPdf(bytes, EXPORT_FILENAME);
-    } catch (error) {
-      console.error("PDF export failed:", error);
-      window.alert(
-        error instanceof Error
-          ? `PDF export failed: ${error.message}`
-          : "PDF export failed. Please try again.",
-      );
-    } finally {
-      delete document.documentElement.dataset.deckExport;
-      setExportSlideIndex(null);
-      setExporting(false);
-      setExportProgress(null);
-    }
-  }, [exporting, exportReadyUrl]);
-
-  const dismissExportReady = useCallback(() => {
-    if (exportReadyUrl) {
-      URL.revokeObjectURL(exportReadyUrl);
-      setExportReadyUrl(null);
-    }
-  }, [exportReadyUrl]);
+  const handleDownloadPdf = useCallback(() => {
+    downloadProposalPdf();
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -228,17 +171,13 @@ export function DeckViewer() {
         <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
-            onClick={handleExportPdf}
-            disabled={exporting || scale === null}
-            aria-label="Export deck as PDF"
-            title="Export deck as PDF"
+            onClick={handleDownloadPdf}
+            disabled={scale === null}
+            aria-label="Download proposal PDF"
+            title="Download proposal PDF"
             className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
           >
-            {exporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
+            <Download className="h-4 w-4" />
           </button>
           <button
             type="button"
@@ -263,68 +202,6 @@ export function DeckViewer() {
           </button>
         </div>
       </nav>
-
-      <div
-        ref={exportHostRef}
-        aria-hidden
-        className="deck-fixed-layout pointer-events-none fixed overflow-hidden"
-        style={{
-          left: 0,
-          top: 0,
-          width: SLIDE_WIDTH,
-          height: SLIDE_HEIGHT,
-          transform: "translateX(-200vw)",
-          zIndex: 0,
-          opacity: 1,
-          visibility: exportSlideIndex !== null ? "visible" : "hidden",
-        }}
-      >
-        {exportSlideIndex !== null && renderDeckSlide(exportSlideIndex)}
-      </div>
-
-      {exporting && exportProgress && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[rgba(13,15,26,0.45)] px-6 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-[color:var(--gms-border)] bg-white p-6 text-center shadow-xl">
-            <Loader2 className="mx-auto h-8 w-8 animate-spin text-deck-accent" />
-            <p className="mt-4 text-[18px] font-semibold text-[color:var(--gms-text)]">
-              Building PDF…
-            </p>
-            <p className="mt-2 text-[15px] text-[color:var(--gms-text-muted)]">
-              Slide {exportProgress.current} of {exportProgress.total}
-            </p>
-            <p className="mt-3 text-[13px] text-[color:var(--gms-text-muted)]">
-              This can take a few minutes. Please keep this tab open.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {exportReadyUrl && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[rgba(13,15,26,0.45)] px-6 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-[color:var(--gms-border)] bg-white p-6 text-center shadow-xl">
-            <p className="text-[18px] font-semibold text-[color:var(--gms-text)]">
-              PDF ready
-            </p>
-            <p className="mt-2 text-[15px] text-[color:var(--gms-text-muted)]">
-              If your download didn&apos;t start automatically, click below.
-            </p>
-            <a
-              href={exportReadyUrl}
-              download={EXPORT_FILENAME}
-              className="mt-5 inline-flex items-center justify-center rounded-full bg-deck-accent px-6 py-2.5 text-[14px] font-semibold text-white"
-            >
-              Download PDF
-            </a>
-            <button
-              type="button"
-              onClick={dismissExportReady}
-              className="mt-3 block w-full text-[13px] font-medium text-[color:var(--gms-text-muted)]"
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

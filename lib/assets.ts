@@ -1,6 +1,7 @@
 /** Public asset paths — images live under /public/images */
 export const ASSETS = {
   cover: "/images/cover/dhl-cover.jpg",
+  proposalPdf: "/DHL-Motheo-Proposal.pdf",
   brands: {
     dhlFavicon: "/images/brands/dhl-favicon.png",
     ibdFavicon: "/images/brands/favicon-ibd.png",

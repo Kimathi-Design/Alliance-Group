@@ -83,7 +83,7 @@ export const coverMeta = {
   website: "www.ibd.co.ls",
   location: "Maseru, Lesotho",
   tin: "200116903-2",
-  date: "22nd of July 2026",
+  date: "24th of June 2026",
   reference: "IBD-DHL-LEKUKA-2026-01",
   accreditation: "Revenue Services Lesotho Accredited Solution Provider",
 };
@@ -1046,10 +1046,26 @@ export const servicePrinciples = [
 ];
 
 export const commercialProposal: { description: string; amount: string }[] = [
-  { description: "Enterprise SAP Integration & Compliance Enablement", amount: "$17,250.00" },
+  { description: "One-time implementation cost", amount: "$17,250.00" },
   {
-    description: "Motheo Compliance Platform – Year 1 Subscription & Managed Services",
+    description: "Recurring subscription fees (Year 1) — Motheo platform subscription & managed services",
     amount: "$32,343.75",
+  },
+  {
+    description: "Software license fees (if applicable)",
+    amount: "Included in subscription",
+  },
+  {
+    description: "Annual support & maintenance fees (Year 2 onwards)",
+    amount: "$22,023.43",
+  },
+  {
+    description: "Training costs",
+    amount: "Included",
+  },
+  {
+    description: "Any additional costs",
+    amount: "None anticipated (subject to scope change)",
   },
   { description: "Total First-Year Investment (Inclusive of Taxes)", amount: "$49,593.75" },
 ];
@@ -1096,11 +1112,6 @@ export const yearOneIncluded = [
     title: "Managed Services",
     description:
       "Ongoing platform operation, monitoring and support for the full first year of service.",
-  },
-  {
-    title: "Regulatory Compliance Updates",
-    description:
-      "Implementation of changes to Revenue Services Lesotho requirements as they are published.",
   },
 ];
 

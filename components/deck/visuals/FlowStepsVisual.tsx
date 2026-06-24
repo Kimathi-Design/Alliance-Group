@@ -87,7 +87,7 @@ export function FlowStepsVisual({
   }
 
   const gridClass =
-    columns === 4 ? "grid-cols-2 xl:grid-cols-4" : "grid-cols-2";
+    columns === 4 ? "grid-cols-4" : "grid-cols-2";
 
   return (
     <div

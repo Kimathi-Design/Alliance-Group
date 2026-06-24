@@ -213,8 +213,6 @@ export const DELIVERY_PHILOSOPHY_ICONS = [
   CheckCircle2,
   Shield,
   Flag,
-  Target,
-  Handshake,
 ] as const;
 
 export const SOLUTION_COMPONENT_ICONS = [

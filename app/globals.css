@@ -1739,6 +1739,8 @@ html:not(.light) {
   --deck-header-body-gap: 56px;
   --deck-intro-body-gap: 20px;
   --deck-footer-gap: 40px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 .deck-slide::before {
   content: "";
@@ -2347,6 +2349,26 @@ html:not(.light) {
   position: absolute;
   top: 0;
   left: 0;
+}
+/* Slides render at fixed 1240px — keep desktop layout on all viewports */
+.deck-fixed-layout .sm\:grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.deck-fixed-layout .xl\:grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.deck-fixed-layout .lg\:grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.deck-fixed-layout .lg\:grid-cols-\[0\.85fr_1\.15fr\] {
+  grid-template-columns: 0.85fr 1.15fr;
+}
+.deck-fixed-layout .lg\:block,
+.deck-fixed-layout .xl\:block {
+  display: block;
+}
+.deck-fixed-layout .sm\:text-\[26px\] {
+  font-size: 26px;
 }
 @media (prefers-reduced-motion: reduce) {
   .deck-stage {

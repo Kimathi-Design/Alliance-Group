@@ -15,7 +15,7 @@ export function DeckLoadingScreen() {
           <DeckHeroBrand size="large" variant="motheo" className="justify-center" />
         </motion.div>
         <motion.p
-          className="max-w-[520px] text-[22px] font-medium tracking-tight text-[color:var(--gms-text-muted)] sm:text-[26px]"
+          className="max-w-[520px] text-[26px] font-medium tracking-tight text-[color:var(--gms-text-muted)]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}

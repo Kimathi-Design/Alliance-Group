@@ -155,7 +155,7 @@ export function DeckViewer() {
             }}
           >
             <div
-              className="deck-stage-scaler"
+              className="deck-stage-scaler deck-fixed-layout"
               style={{
                 width: SLIDE_WIDTH,
                 height: SLIDE_HEIGHT,
@@ -234,7 +234,7 @@ export function DeckViewer() {
       <div
         ref={exportHostRef}
         aria-hidden
-        className="pointer-events-none fixed overflow-hidden"
+        className="deck-fixed-layout pointer-events-none fixed overflow-hidden"
         style={{
           left: -SLIDE_WIDTH * 2,
           top: 0,

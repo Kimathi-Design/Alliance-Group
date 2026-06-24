@@ -233,14 +233,6 @@ const DELIVERY_PHILOSOPHY_DETAILS = [
     title: "Sustainability",
     description: "Designing solutions that support long-term business growth.",
   },
-  {
-    title: "Transparency",
-    description: "Clear communication and visibility throughout delivery.",
-  },
-  {
-    title: "Partnership",
-    description: "Collaborative engagement with client teams and stakeholders.",
-  },
 ];
 
 const CODE_OF_CONDUCT_COMMITMENTS = [
@@ -327,12 +319,16 @@ export function renderDeckSlide(index: number) {
           <div className="space-y-4">
             <div className="text-[18px] font-medium leading-[1.6] text-[color:var(--gms-text)]">
               <p>
-                <span className="font-medium text-[color:var(--gms-text)]">To:</span> Country
-                Manager, DHL Express Lesotho
+                <span className="font-medium text-[color:var(--gms-text)]">To:</span> Sandana
+                Armoogum, Purchasing Manager
               </p>
-              <p className="mt-1">Country Manager</p>
-              <p>DHL Express Lesotho</p>
-              <p>Maseru, Lesotho</p>
+              <p className="mt-1">GBS Procurement Sub-Saharan Africa</p>
+              <p>Purchasing Center Mauritius</p>
+              <p>Port Louis, Mauritius</p>
+              <p>
+                <span className="font-medium text-[color:var(--gms-text)]">Email:</span>{" "}
+                sandana.armoogum@dhl.com
+              </p>
             </div>
             <p className="text-[18px] font-medium leading-[1.6] text-[color:var(--gms-text)]">Dear Sir/Madam,</p>
             <DeckBody>
@@ -754,6 +750,8 @@ export function renderDeckSlide(index: number) {
                 DELIVERY_PHILOSOPHY_ICONS,
               )}
             />
+            <DeckSectionLabel>Client References</DeckSectionLabel>
+            <DeckBody>References available on request.</DeckBody>
           </div>
         </DeckSlideFrame>
       );
@@ -1554,7 +1552,7 @@ export function renderDeckSlide(index: number) {
             </DeckBody>
           </div>
           <div className="mt-4 space-y-4">
-            <DeckSectionLabel>First-Year Investment</DeckSectionLabel>
+            <DeckSectionLabel>Commercial Proposal (Requested Cost Categories)</DeckSectionLabel>
             <DeckTable
               headers={["Description", "Amount (USD)"]}
               rows={commercialProposal.map((r) => [r.description, r.amount])}

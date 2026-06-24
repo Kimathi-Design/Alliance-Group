@@ -1,12 +1,9 @@
 import { toPng } from "html-to-image";
 import { PDFDocument } from "pdf-lib";
-import {
-  appendices,
-  getAppendixIndexForSlide,
-} from "@/lib/deck-content";
+import { APPENDIX_START_SLIDE, appendices } from "@/lib/deck-content";
 
 export type ExportDeckPdfOptions = {
-  slideCount: number;
+  slideCount?: number;
   width: number;
   height: number;
   filename?: string;
@@ -14,6 +11,9 @@ export type ExportDeckPdfOptions = {
   onProgress?: (current: number, total: number) => void;
   settleMs?: (index: number) => number;
 };
+
+/** Slides captured as PNG — appendix breaker slides are skipped (PDFs merged instead). */
+const PNG_SLIDE_COUNT = APPENDIX_START_SLIDE;
 
 export async function waitForSlideReady(root: HTMLElement | null) {
   await document.fonts.ready;
@@ -35,17 +35,22 @@ export async function waitForSlideReady(root: HTMLElement | null) {
   );
 }
 
-async function appendAppendixPages(
-  pdfDoc: PDFDocument,
-  appendixIndex: number,
-) {
-  const appendix = appendices[appendixIndex];
-  const response = await fetch(appendix.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load ${appendix.file}`);
-  }
+async function loadAppendixBytes() {
+  return Promise.all(
+    appendices.map(async (appendix) => {
+      const response = await fetch(appendix.file);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${appendix.file}`);
+      }
+      return response.arrayBuffer();
+    }),
+  );
+}
 
-  const appendixBytes = await response.arrayBuffer();
+async function appendAppendixPagesFromBytes(
+  pdfDoc: PDFDocument,
+  appendixBytes: ArrayBuffer,
+) {
   const appendixPdf = await PDFDocument.load(appendixBytes);
   const copied = await pdfDoc.copyPages(
     appendixPdf,
@@ -65,19 +70,19 @@ function downloadPdf(bytes: Uint8Array, filename: string) {
 }
 
 export async function exportDeckToPdf({
-  slideCount,
   width,
   height,
   filename = "DHL-Motheo-Proposal.pdf",
   renderSlide,
   onProgress,
-  settleMs = () => 400,
+  settleMs = () => 75,
 }: ExportDeckPdfOptions) {
   const pdfDoc = await PDFDocument.create();
+  const appendixBytesPromise = loadAppendixBytes();
   let progressStep = 0;
-  const totalSteps = slideCount + appendices.length;
+  const totalSteps = PNG_SLIDE_COUNT + appendices.length;
 
-  for (let i = 0; i < slideCount; i++) {
+  for (let i = 0; i < PNG_SLIDE_COUNT; i++) {
     progressStep += 1;
     onProgress?.(progressStep, totalSteps);
 
@@ -90,17 +95,22 @@ export async function exportDeckToPdf({
     await new Promise((resolve) =>
       requestAnimationFrame(() => requestAnimationFrame(resolve)),
     );
-    await new Promise((resolve) => setTimeout(resolve, settleMs(i)));
+
+    const delay = settleMs(i);
+    if (delay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
 
     const dataUrl = await toPng(el, {
       width,
       height,
-      pixelRatio: 2,
-      cacheBust: true,
-      includeQueryParams: true,
+      pixelRatio: 1.5,
+      cacheBust: false,
     });
 
-    const pngBytes = await fetch(dataUrl).then((response) => response.arrayBuffer());
+    const pngBytes = await fetch(dataUrl).then((response) =>
+      response.arrayBuffer(),
+    );
     const image = await pdfDoc.embedPng(pngBytes);
     const page = pdfDoc.addPage([width, height]);
     page.drawImage(image, {
@@ -109,13 +119,13 @@ export async function exportDeckToPdf({
       width,
       height,
     });
+  }
 
-    const appendixIndex = getAppendixIndexForSlide(i);
-    if (appendixIndex !== null) {
-      progressStep += 1;
-      onProgress?.(progressStep, totalSteps);
-      await appendAppendixPages(pdfDoc, appendixIndex);
-    }
+  const appendixBuffers = await appendixBytesPromise;
+  for (const appendixBytes of appendixBuffers) {
+    progressStep += 1;
+    onProgress?.(progressStep, totalSteps);
+    await appendAppendixPagesFromBytes(pdfDoc, appendixBytes);
   }
 
   const bytes = await pdfDoc.save();

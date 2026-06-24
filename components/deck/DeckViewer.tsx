@@ -15,6 +15,7 @@ import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
 import { DeckProgressBar } from "@/components/deck/DeckProgressBar";
 import { IbdMark } from "@/components/deck/IbdMark";
 import {
+  APPENDIX_START_SLIDE,
   SLIDE_COUNT,
   SLIDE_HEIGHT,
   SLIDE_WIDTH,
@@ -57,7 +58,7 @@ export function DeckViewer() {
 
     try {
       await exportDeckToPdf({
-        slideCount: SLIDE_COUNT,
+        slideCount: APPENDIX_START_SLIDE,
         width: SLIDE_WIDTH,
         height: SLIDE_HEIGHT,
         renderSlide: async (index) => {
@@ -71,7 +72,7 @@ export function DeckViewer() {
             "section.deck-slide",
           ) as HTMLElement | null;
         },
-        settleMs: (index) => (index === 0 ? 2200 : 500),
+        settleMs: (index) => (index === 0 ? 350 : 0),
       });
     } catch (error) {
       console.error("PDF export failed:", error);

@@ -367,7 +367,7 @@ export const aboutInfinityIntro = [
 export const companyCredentials = [
   { title: "Registration", description: "A2023/5840 — business licence renewed 23 April 2026 (expires 23 April 2029)." },
   { title: "Taxpayer ID", description: "TIN 200116903-2 with RSL tax clearance valid until 12 May 2027." },
-  { title: "Registered address", description: "Ha Tsosane, Maseru, Lesotho." },
+  { title: "Registered address", description: "Lancers Road, House No.16, Maseru, Lesotho." },
   { title: "Legal entity", description: "Infinity Business Dynamics (Pty) Ltd — Lesotho-registered enterprise." },
   { title: "RSL accreditation", description: "Revenue Services Lesotho Accredited Solution Provider." },
   { title: "Primary contact", description: "services@ibd.co.ls · +266 6255 4433 · www.ibd.co.ls" },

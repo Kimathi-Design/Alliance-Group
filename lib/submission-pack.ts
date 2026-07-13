@@ -19,7 +19,7 @@ export const companyProfile = {
   taxClearanceValidUntil: "12 May 2027",
   businessLicenceRenewed: "23 April 2026",
   businessLicenceExpiry: "23 April 2029",
-  registeredAddress: "Ha Tsosane, Maseru, Lesotho",
+  registeredAddress: "Lancers Road, House No.16, Maseru, Lesotho",
 } as const;
 
 export const bbbeeGapStatement = `Infinity Business Dynamics (Pty) Ltd is a Lesotho-registered enterprise operating primarily within the Kingdom of Lesotho. A formal B-BBEE (Broad-Based Black Economic Empowerment) certificate issued under the South African B-BBEE Codes is not applicable to our Lesotho incorporation.

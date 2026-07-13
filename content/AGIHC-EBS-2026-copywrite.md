@@ -532,7 +532,7 @@ Our objective is to establish a durable compliance foundation for Alliance Group
 
 - **Registration** — A2023/5840 — business licence renewed 23 April 2026 (expires 23 April 2029).
 - **Taxpayer ID** — TIN 200116903-2 with RSL tax clearance valid until 12 May 2027.
-- **Registered address** — Ha Tsosane, Maseru, Lesotho.
+- **Registered address** — Lancers Road, House No.16, Maseru, Lesotho.
 - **Legal entity** — Infinity Business Dynamics (Pty) Ltd — Lesotho-registered enterprise.
 - **RSL accreditation** — Revenue Services Lesotho Accredited Solution Provider.
 - **Primary contact** — services@ibd.co.ls · +266 6255 4433 · www.ibd.co.ls

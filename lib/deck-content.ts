@@ -126,7 +126,7 @@ export const coverMeta = {
   preparedBy: "INFINITY BUSINESS DYNAMICS (PTY) LTD",
   preparedByDisplay: "Infinity Business Dynamics (Pty) Ltd",
   tagline: "Harnessing the Power of Technology",
-  address: "Ha Tsosane, Maseru, Lesotho",
+  address: "Lancers Road, House No.16, Maseru, Lesotho",
   email: "services@ibd.co.ls",
   phone1: "+266 6255 4433",
   phone2: "",

@@ -581,7 +581,6 @@ export function GovernanceFrameworkVisual() {
 
   return (
     <div className="governance-framework-visual flex h-full min-h-0 w-full flex-col">
-      <DeckVisualPanelLabel>Governance Structure</DeckVisualPanelLabel>
       <div className="governance-framework-visual__sections flex min-h-0 flex-1 flex-col">
         <div className="governance-framework-visual__section flex min-h-0 flex-1 flex-col gap-1.5">
           <p className="governance-framework-visual__section-label deck-type-premium-label">

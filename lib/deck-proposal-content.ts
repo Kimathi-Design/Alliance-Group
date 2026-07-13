@@ -479,7 +479,7 @@ export const multiEntityArchitectureIntro = [
   "Alliance Group currently operates different software platforms across its business entities.",
   "Implementing individual compliance solutions for each company would increase infrastructure costs, duplicate support efforts and complicate long-term governance.",
   "Infinity Business Dynamics therefore recommends a shared Enterprise Compliance Hub architecture.",
-  "Each business application communicates with the Hub through secure integration services while maintaining operational independence.",
+  "Each entity connects to the Hub through the pathway that fits — API integration, native connectors, Zoho Elite with Motheo POS, or a standalone billing portal — while maintaining operational independence.",
   "The Hub centralises compliance processing before securely submitting transactions to Revenue Services Lesotho.",
 ] as const;
 
@@ -859,7 +859,7 @@ export const implementationLifecycle = [
 export const rolloutPhases = [
   { phase: "Phase 1", title: "Enterprise Compliance Hub Installation" },
   { phase: "Phase 2", title: "Properties (MDA/MRI)" },
-  { phase: "Phase 3", title: "Lehae Funeral Home" },
+  { phase: "Phase 3", title: "Lehae — Zoho Elite / Motheo POS" },
   { phase: "Phase 4", title: "Finclude Lesotho (Xero)" },
   { phase: "Phase 5", title: "AGIHC Billing Portal" },
   { phase: "Phase 6", title: "Group Reporting & Optimisation" },
@@ -950,8 +950,8 @@ export const keyMilestones = [
     inline: true,
   },
   {
-    title: "Integrations Complete",
-    description: "Properties, Lehae, Finclude and AGIHC connections validated.",
+    title: "Entity Pathways Complete",
+    description: "Properties, Lehae (Zoho Elite / Motheo POS), Finclude and AGIHC pathways validated.",
     inline: true,
   },
   {

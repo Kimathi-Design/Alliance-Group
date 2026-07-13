@@ -715,7 +715,7 @@ Additional entities and systems can be onboarded without redesigning the platfor
 Enterprise platform illustration:
 
 ```
-Properties (MDA/MRI) → Lehae Funeral → Finclude (Xero) → AGIHC Portal
+Properties (MDA/MRI) → Lehae (Zoho Elite / Motheo POS) → Finclude (Xero) → AGIHC Portal
                               ↓
               Enterprise Compliance Hub
                               ↓
@@ -740,15 +740,15 @@ Implementing individual compliance solutions for each company would increase inf
 
 Infinity Business Dynamics therefore recommends a shared Enterprise Compliance Hub architecture.
 
-Each business application communicates with the Hub through secure integration services while maintaining operational independence.
+Each entity connects to the Hub through the pathway that fits — API integration, native connectors, Zoho Elite with Motheo POS, or a standalone billing portal — while maintaining operational independence.
 
 The Hub centralises compliance processing before securely submitting transactions to Revenue Services Lesotho.
 
 **Architectural Principles**
 
 - **Single Compliance Platform** — One central compliance engine supporting all participating entities.
-- **Independent Business Operations** — Each entity continues using its preferred operational software.
-- **Secure API Integration** — Standardised communication between applications and the Compliance Hub.
+- **Independent Business Operations** — Each entity follows the operational pathway best suited to its business — including Zoho Elite with Motheo POS for Lehae's nine branches.
+- **Secure API Integration** — Standardised communication between integrated applications and the Compliance Hub.
 - **Shared Monitoring** — Centralised dashboards and compliance reporting.
 - **Future Expansion** — Additional companies can be connected without redesigning the platform.
 
@@ -759,7 +759,7 @@ Enterprise layered architecture using layered enterprise blocks:
 ```
 Alliance Group
 ──────────────
-Properties | Lehae | Finclude | AGIHC
+Properties | Lehae / Zoho | Finclude | AGIHC
 ──────────────
 Integration Layer
 ──────────────
@@ -1376,7 +1376,7 @@ This approach enables the platform to be fully operational before connecting bus
 
 **Phase 2** — Properties (MDA/MRI)
 
-**Phase 3** — Lehae Funeral Home
+**Phase 3** — Lehae — Zoho Elite / Motheo POS
 
 **Phase 4** — Finclude Lesotho (Xero)
 
@@ -1518,7 +1518,7 @@ The timeline has been structured to allow progressive onboarding of each Allianc
 - Kick-off
 - Architecture Sign-off
 - Compliance Hub Ready
-- Integrations Complete
+- Entity Pathways Complete — Properties, Lehae (Zoho Elite / Motheo POS), Finclude and AGIHC pathways validated.
 - User Acceptance Testing
 - Production Go-Live
 - Project Closure

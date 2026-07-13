@@ -8,7 +8,7 @@ import { ASSETS } from "@/lib/assets";
 
 const STACK_ENTITIES = [
   "Properties",
-  "Lehae",
+  "Lehae / Zoho",
   "Finclude",
   "AGIHC",
 ] as const;

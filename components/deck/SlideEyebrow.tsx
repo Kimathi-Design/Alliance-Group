@@ -2,6 +2,8 @@
 
 import type { LucideIcon } from "lucide-react";
 import {
+  Activity,
+  AlertCircle,
   Award,
   BadgeCheck,
   Banknote,
@@ -12,9 +14,12 @@ import {
   Calendar,
   ClipboardCheck,
   ClipboardList,
+  Cloud,
+  Compass,
   FileCheck,
   FileSignature,
   FileText,
+  Flag,
   GitBranch,
   GraduationCap,
   Handshake,
@@ -29,8 +34,10 @@ import {
   QrCode,
   Receipt,
   RefreshCw,
+  PenLine,
   Route,
   Scale,
+  Search,
   Server,
   Shield,
   ShieldCheck,
@@ -42,51 +49,17 @@ import {
   Wrench,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { BweMark, IbdMark } from "@/components/deck/IbdMark";
+import { AllianceMark, IbdMark } from "@/components/deck/IbdMark";
 import { slideTitles, getTocSectionNumber } from "@/lib/deck-content";
 
 const SLIDE_ICONS: LucideIcon[] = [
-  Package, // 0 Cover
-  Mail, // 1 Executive Letter
-  LayoutList, // 2 Table of Contents
-  FileText, // 3 Executive Summary
-  Target, // 4 Strategic Business Outcomes
-  Building2, // 5 Understanding Barloworld Equipment
-  ClipboardCheck, // 6 Business Challenges
-  Building2, // 7 About Infinity
-  Award, // 8 Why Infinity
-  BadgeCheck, // 9 RSL Accreditation
-  Layers, // 10 Enterprise Compliance Gateway
-  Network, // 11 Enterprise Solution Architecture
-  Server, // 12 SAP ERP Integration
-  Users, // 13 CRM Integration
-  Workflow, // 14 API Integration Framework
-  Route, // 15 Motheo Compliance Engine
-  Shield, // 16 Security Architecture
-  RefreshCw, // 17 Transaction Lifecycle
-  GitBranch, // 18 Online & Offline Processing
-  Lock, // 19 Digital Certificate Management
-  QrCode, // 20 QR Code Management
-  BarChart3, // 21 Compliance Monitoring & Analytics
-  ShieldCheck, // 22 Business Continuity & DR
-  LineChart, // 23 Compliance Analytics & Reporting
-  Sparkles, // 24 Implementation Methodology
-  Scale, // 25 Project Governance
-  Users, // 26 Project Organisation & Delivery Team
-  GitBranch, // 27 Project Implementation Plan
-  Calendar, // 28 Project Timeline
-  FileCheck, // 29 Testing & Quality Assurance
-  GraduationCap, // 30 Training & Change Management
-  Headphones, // 31 Support & Managed Services
-  Timer, // 32 Service Level Commitments
-  Lock, // 33 Risk Management
-  Banknote, // 34 Commercial Proposal
-  ClipboardList, // 35 Supplier Responses
-  Award, // 36 Why Infinity
-  Sparkles, // 37 Conclusion
-  FileSignature, // 38 Proposal Acceptance
-  BookOpen, // 39 Barloworld RFQ Annexures
-  FileCheck, // 40 Mandatory Supporting Documents (RFQ §2)
+  Package, Mail, LayoutList, FileText, Target, Building2, ClipboardCheck, Scale,
+  GitBranch, Layers, Briefcase, Award, BadgeCheck, BookOpen, Users, Network,
+  Server, Workflow, Cloud, Receipt, ShieldCheck, RefreshCw, PenLine, QrCode,
+  BarChart3, Lock, ClipboardList, Sparkles, Route, Timer, GraduationCap, Calendar,
+  FileCheck, Headphones, Banknote, LineChart, Handshake, Shield, Wrench, Search,
+  Flag, Activity, FileSignature, Compass, AlertCircle, Timer, Workflow, GraduationCap,
+  Mail, Target, Layers, Award,
 ];
 
 type SectionBadgeProps = {
@@ -151,12 +124,12 @@ export function SlideEyebrow({
   );
 }
 
-/** Slide header brand — BWE + IBD on every slide */
+/** Slide header brand — Alliance + IBD */
 export function DeckHeaderBrand() {
   return (
     <div className="gms-eyebrow inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-medium tracking-[0.2em] uppercase backdrop-blur">
-      <BweMark size="sm" />
-      <span>BWE | Infinity Business Dynamics</span>
+      <AllianceMark />
+      <span>Alliance Group | Infinity Business Dynamics</span>
       <IbdMark size="sm" />
     </div>
   );

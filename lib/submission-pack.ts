@@ -157,21 +157,13 @@ export const submissionSections: readonly SubmissionSection[] = [
 /** Flat list for appendix slide rendering */
 export const appendices = submissionSections.flatMap((section) => section.items);
 
-/** PDFs merged after deck slides, in submission order */
+/** PDFs merged after deck slides, in Alliance appendix order */
 export const submissionPdfMergeOrder = [
-  "annexure-c-intent-to-respond-signed.pdf",
-  "annexure-d-pricing-requirements.pdf",
-  "annexure-b-e-invoicing-gateway-api-spec.pdf",
-  "annexure-e-framework-agreement-deviations.pdf",
-  "annexure-f-nda-confidentiality-agreement-signed.pdf",
-  "mandatory-compliance-documents-2026.pdf",
-  "mandatory-shareholder-identification.pdf",
-  "mandatory-good-standing-letter.pdf",
-  "mandatory-vat-registration-certificate.pdf",
-  "mandatory-banking-details.pdf",
-  "mandatory-bbbee-gap-statement.pdf",
   "support-a-rsl-accreditation-letter.pdf",
   "support-b-motheo-integrator-guide.pdf",
-  "support-f-supplier-self-assessment-signed.pdf",
-  "support-g-supplier-code-of-conduct-signed.pdf",
+  "appendix-f-commercial-pricing-schedule.pdf",
+  "mandatory-compliance-documents-2026.pdf",
+  "mandatory-tax-clearance-certificate.pdf",
+  "mandatory-banking-details.pdf",
+  "mandatory-vat-registration-certificate.pdf",
 ] as const;

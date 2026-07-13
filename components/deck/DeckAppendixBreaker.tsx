@@ -11,7 +11,8 @@ type Props = {
 export function DeckAppendixBreaker({ slideIndex, appendix, appendixIndex }: Props) {
   const file =
     "file" in appendix && typeof appendix.file === "string" ? appendix.file : undefined;
-  const purpose = "purpose" in appendix ? appendix.purpose : null;
+  const purpose =
+    "purpose" in appendix && typeof appendix.purpose === "string" ? appendix.purpose : undefined;
 
   return (
     <DeckSlideFrame index={slideIndex} layout="full">

@@ -25,14 +25,14 @@ import {
 
 type Props = {
   index: number;
-  children: ReactNode;
+  children?: ReactNode;
   showParticles?: boolean;
   className?: string;
   /** Skip intro/body split — use for hero slides with custom full-bleed layout */
   layout?: "default" | "full";
   /** Full-bleed background image rendered behind slide content */
   backgroundImage?: string;
-  /** Hide the default slide footer (e.g. cover slide) */
+  /** Hide the default slide footer (e.g. cover / back cover) */
   hideFooter?: boolean;
 };
 
@@ -63,15 +63,28 @@ function partitionSlideChildren(children: ReactNode) {
 export function DeckVisualPanel({
   children,
   className = "",
+  label,
 }: {
   children: ReactNode;
   className?: string;
+  label?: ReactNode;
 }) {
   return (
     <div
-      className={`deck-visual-panel flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl border border-[color:var(--gms-border)] bg-[color:var(--ibd-gray)] p-6 ${className}`.trim()}
+      className={`deck-visual-panel flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl border border-[color:var(--gms-border)] bg-[color:var(--ibd-gray)] p-6${
+        label ? " deck-visual-panel--labeled" : ""
+      } ${className}`.trim()}
     >
-      {children}
+      {label ? (
+        <>
+          <DeckVisualPanelLabel className="deck-visual-panel__heading">{label}</DeckVisualPanelLabel>
+          <div className="deck-visual-panel__body flex min-h-0 flex-1 flex-col overflow-hidden">
+            {children}
+          </div>
+        </>
+      ) : (
+        children
+      )}
     </div>
   );
 }
@@ -80,6 +93,7 @@ export function DeckVisualPanel({
 export function DeckSlideBodySplit({
   children,
   visual,
+  visualLabel,
   className = "",
   proseClassName = "",
   visualClassName = "",
@@ -87,6 +101,7 @@ export function DeckSlideBodySplit({
 }: {
   children: ReactNode;
   visual: ReactNode;
+  visualLabel?: ReactNode;
   className?: string;
   proseClassName?: string;
   visualClassName?: string;
@@ -100,7 +115,9 @@ export function DeckSlideBodySplit({
         <div className="deck-slide-body-split__prose flex min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain pr-1">
           {children}
         </div>
-        <DeckVisualPanel className="h-full min-h-0">{visual}</DeckVisualPanel>
+        <DeckVisualPanel className={`h-full min-h-0 ${visualClassName}`.trim()} label={visualLabel}>
+          {visual}
+        </DeckVisualPanel>
       </div>
     );
   }
@@ -110,7 +127,9 @@ export function DeckSlideBodySplit({
       <div
         className={`deck-slide-body-split deck-slide-body-split--visual-top flex h-full min-h-0 flex-1 flex-col gap-4 ${className}`.trim()}
       >
-        <DeckVisualPanel className="min-h-0 flex-[1.45]">{visual}</DeckVisualPanel>
+        <DeckVisualPanel className="min-h-0 flex-[1.45]" label={visualLabel}>
+          {visual}
+        </DeckVisualPanel>
         <div className="deck-slide-body-split__prose min-h-0 flex-1 overflow-y-auto overscroll-contain space-y-3">
           {children}
         </div>
@@ -128,7 +147,7 @@ export function DeckSlideBodySplit({
         >
           {children}
         </div>
-        <DeckVisualPanel className={`min-h-0 shrink-0 flex-[2] ${visualClassName}`.trim()}>
+        <DeckVisualPanel className={`min-h-0 shrink-0 flex-[2] ${visualClassName}`.trim()} label={visualLabel}>
           {visual}
         </DeckVisualPanel>
       </div>
@@ -138,7 +157,7 @@ export function DeckSlideBodySplit({
   return (
     <div className={`flex min-h-0 flex-1 flex-col gap-4 ${className}`.trim()}>
       <div className="shrink-0 space-y-4">{children}</div>
-      <DeckVisualPanel>{visual}</DeckVisualPanel>
+      <DeckVisualPanel label={visualLabel}>{visual}</DeckVisualPanel>
     </div>
   );
 }
@@ -172,7 +191,9 @@ export function DeckSlideFrame({
               aria-hidden
               fill
               sizes={`${SLIDE_WIDTH}px`}
-              quality={90}
+              quality={95}
+              // Exact slide-sized JPEGs — skip optimizer re-encode/upscale soft blur
+              unoptimized
               className="pointer-events-none absolute inset-0 z-[1] object-cover"
               priority
             />
@@ -204,7 +225,7 @@ export function DeckSlideFrame({
             paddingRight: SLIDE_PADDING_X,
           }}
         >
-          {index !== 0 && (
+          {!hideFooter && (
             <header
               className="deck-slide-header flex shrink-0 items-center justify-between gap-4"
               style={{ marginBottom: SLIDE_HEADER_BODY_GAP }}
@@ -466,8 +487,8 @@ export function DeckBulletList({
         return (
           <li
             key={title}
-            className={`flex items-start text-[color:var(--gms-text)] ${
-              compact ? "deck-type-body-compact gap-2" : "deck-type-body gap-3 leading-relaxed"
+            className={`deck-type-body flex items-start gap-3 leading-relaxed text-[color:var(--gms-text)] ${
+              compact ? "gap-2" : ""
             }`}
           >
             <span

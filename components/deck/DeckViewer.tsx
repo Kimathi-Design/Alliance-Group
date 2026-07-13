@@ -22,7 +22,7 @@ import {
   slideTitles,
 } from "@/lib/deck-content";
 
-const PROPOSAL_FILENAME = "BW-Group-Motheo-Proposal.pdf";
+const PROPOSAL_FILENAME = "Alliance-Group-Motheo-Proposal.pdf";
 const FIT_MARGIN = 20;
 
 function computeDeckScale(navHeight: number, container?: HTMLElement | null) {

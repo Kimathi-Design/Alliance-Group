@@ -5,25 +5,18 @@ import { tmpdir } from "node:os";
 import { chromium } from "playwright";
 import { PDFDocument } from "pdf-lib";
 
+/** Keep in sync with lib/submission-pack.ts → submissionPdfMergeOrder */
 const submissionPdfMergeOrder = [
-  "annexure-c-intent-to-respond-signed.pdf",
-  "annexure-d-pricing-requirements.pdf",
-  "annexure-b-e-invoicing-gateway-api-spec.pdf",
-  "annexure-e-framework-agreement-deviations.pdf",
-  "annexure-f-nda-confidentiality-agreement-signed.pdf",
-  "mandatory-compliance-documents-2026.pdf",
-  "mandatory-shareholder-identification.pdf",
-  "mandatory-good-standing-letter.pdf",
-  "mandatory-vat-registration-certificate.pdf",
-  "mandatory-banking-details.pdf",
-  "mandatory-bbbee-gap-statement.pdf",
   "support-a-rsl-accreditation-letter.pdf",
   "support-b-motheo-integrator-guide.pdf",
-  "support-f-supplier-self-assessment-signed.pdf",
-  "support-g-supplier-code-of-conduct-signed.pdf",
+  "appendix-f-commercial-pricing-schedule.pdf",
+  "mandatory-compliance-documents-2026.pdf",
+  "mandatory-tax-clearance-certificate.pdf",
+  "mandatory-banking-details.pdf",
+  "mandatory-vat-registration-certificate.pdf",
 ];
 
-const outputPath = join(process.cwd(), "public/BW-Group-Motheo-Proposal.pdf");
+const outputPath = join(process.cwd(), "public/Alliance-Group-Motheo-Proposal.pdf");
 const port = Number(process.env.DECK_PORT ?? 3010);
 const baseUrl = process.env.DECK_URL ?? `http://localhost:${port}`;
 const printUrl = `${baseUrl.replace(/\/$/, "")}/print`;
@@ -61,7 +54,7 @@ try {
   await page.waitForFunction(() => document.fonts.ready);
   await page.waitForTimeout(1500);
 
-  const slidesPath = join(tmpdir(), "bwe-proposal-slides.pdf");
+  const slidesPath = join(tmpdir(), "alliance-proposal-slides.pdf");
   await page.emulateMedia({ media: "print" });
   await page.pdf({
     path: slidesPath,
@@ -70,7 +63,7 @@ try {
     margin: { top: 0, right: 0, bottom: 0, left: 0 },
   });
 
-  console.log("Merging submission pack PDFs...");
+  console.log("Merging appendix PDFs...");
   const pdfDoc = await PDFDocument.load(readFileSync(slidesPath));
   const appendicesDir = join(process.cwd(), "public/appendices");
 

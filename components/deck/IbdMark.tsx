@@ -73,6 +73,33 @@ export function MotheoMark({ size = "sm", className = "" }: IbdMarkProps) {
   );
 }
 
+/** Alliance Group mark for slide headers */
+export function AllianceMark({ className = "" }: { className?: string }) {
+  return (
+    <Image
+      src={ASSETS.brands.allianceLogo}
+      alt=""
+      width={1200}
+      height={400}
+      aria-hidden
+      className={`h-4 w-auto shrink-0 object-contain ${className}`.trim()}
+    />
+  );
+}
+
+/** Alliance Group wordmark for cover footer */
+export function AllianceFooterLogo({ className = "" }: { className?: string }) {
+  return (
+    <Image
+      src={ASSETS.brands.allianceLogo}
+      alt="Alliance Group"
+      width={1200}
+      height={400}
+      className={`h-8 w-auto shrink-0 object-contain object-left ${className}`.trim()}
+    />
+  );
+}
+
 /** Horizontal BWE wordmark for cover footer */
 export function BweFooterLogo({ className = "" }: { className?: string }) {
   return (

@@ -1,10 +1,10 @@
 export * from "@/lib/deck-proposal-content";
 
-import { appendices } from "@/lib/deck-proposal-content";
+import { appendices, tableOfContentsSections } from "@/lib/deck-proposal-content";
 
-export const APPENDIX_COUNT = 0;
-export const APPENDIX_START_SLIDE = 41;
-export const SLIDE_COUNT = 41;
+export const APPENDIX_COUNT = appendices.length;
+export const APPENDIX_START_SLIDE = 49;
+export const SLIDE_COUNT = 51;
 
 /** A4 portrait at ~150 DPI (210mm × 297mm) */
 export const SLIDE_WIDTH = 1240;
@@ -23,160 +23,153 @@ export const slideTitles = [
   "Table of Contents",
   "Executive Summary",
   "Strategic Business Outcomes",
-  "Understanding Barloworld Equipment",
+  "Understanding Alliance Group",
+  "Current Technology Landscape",
   "Business Challenges",
+  "Recommended Solution Strategy",
+  "Infinity Enterprise Compliance Hub",
   "About Infinity Business Dynamics",
   "Why Infinity Business Dynamics",
-  "RSL Accreditation & Solution Positioning",
-  "Enterprise Compliance Gateway",
-  "Enterprise Solution Architecture",
-  "SAP ERP Integration",
-  "CRM Integration",
-  "API Integration Framework",
-  "Motheo Compliance Engine",
-  "Security Architecture",
-  "Transaction Lifecycle",
-  "Online & Offline Processing",
-  "Digital Certificate Management",
-  "QR Code Management",
-  "Compliance Monitoring & Analytics",
-  "Business Continuity & Disaster Recovery",
-  "Compliance Analytics & Reporting",
+  "Revenue Services Lesotho Accreditation",
+  "Relevant Experience",
+  "Project Team & Capability",
+  "Enterprise Compliance Hub Overview",
+  "Multi-Entity Solution Architecture",
+  "Properties (MDA/MRI) Integration",
+  "Lehae Funeral Home Integration",
+  "Finclude Lesotho (Xero) Integration",
+  "AGIHC Standalone Billing Portal",
+  "Customer TIN Validation",
+  "Invoice Lifecycle",
+  "Credit & Debit Note Management",
+  "QR Code Framework",
+  "Dashboard & Reporting",
+  "User Administration",
+  "Audit Trails & Compliance Governance",
   "Implementation Methodology",
+  "Solution Delivery Approach",
   "Project Governance",
-  "Project Organisation & Delivery Team",
-  "Project Implementation Plan",
-  "Project Timeline",
+  "Project Team Structure",
+  "Implementation Timeline",
   "Testing & Quality Assurance",
   "Training & Change Management",
-  "Support & Managed Services",
-  "Service Level Commitments",
+  "Post Go-Live Support",
+  "Commercial Model",
+  "Investment & Pricing Philosophy",
+  "Detailed Commercial Proposal",
+  "Enterprise Licensing & Managed Services",
+  "Total Cost of Ownership",
+  "Return on Investment",
+  "Service Level Agreement",
   "Risk Management",
-  "Commercial Proposal",
-  "Supplier Responses",
   "Why Infinity Business Dynamics",
+  "Supplier Response Matrix",
   "Conclusion",
   "Proposal Acceptance",
-  "Barloworld RFQ Annexures",
-  "Mandatory Supporting Documents (RFQ §2)",
+  "Appendices",
+  "Thank You",
+  "Closing Cover",
 ] as const;
 
+/** Heading shown at the top of each slide visual panel */
+export const slideVisualLabels: Record<number, string> = {
+  3: "Transformation",
+  4: "Strategic Outcomes",
+  5: "Group Structure",
+  6: "Technology Landscape",
+  7: "Challenges vs Response",
+  8: "Solution Strategy",
+  9: "Hub Architecture",
+  10: "Company Profile",
+  11: "Why Infinity",
+  12: "Accreditation",
+  13: "Experience",
+  14: "Team Capability",
+  15: "Platform Overview",
+  16: "Solution Architecture",
+  17: "Properties Integration",
+  18: "Lehae Integration",
+  19: "Xero Integration",
+  20: "Billing Portal",
+  21: "TIN Validation",
+  22: "Invoice Lifecycle",
+  23: "Credit & Debit Notes",
+  24: "QR Code Framework",
+  25: "Executive Dashboard",
+  26: "Access Management",
+  27: "Audit Workflow",
+  28: "Delivery Framework",
+  29: "Rollout Phases",
+  30: "Governance Framework",
+  32: "Project Schedule",
+  33: "Quality Assurance",
+  34: "Training Journey",
+  35: "Support Lifecycle",
+  36: "Commercial Framework",
+  37: "Investment Philosophy",
+  39: "Licensing Model",
+  40: "Cost Comparison",
+  41: "Value Outcomes",
+  42: "SLA Framework",
+  43: "Risk Framework",
+  45: "Compliance Matrix",
+};
+
 export const coverMeta = {
-  platform: "ENTERPRISE COMPLIANCE GATEWAY",
-  subtitle: "Electronic Billing System (EBS)",
-  subjectLines: [
-    "Compliance Gateway Solution (EBS)",
-    "SAP ERP & CRM Integration",
-  ],
-  preparedFor: "BARLOWORLD EQUIPMENT LS",
-  preparedForClient: "Barloworld Equipment Lesotho",
-  preparedForLocation: "Lesotho",
+  platform: "ENTERPRISE TAX COMPLIANCE TRANSFORMATION",
+  subtitle: "Revenue Services Lesotho (RSL) Electronic Billing System (EBS)",
+  subjectLines: ["Group-Wide Compliance Platform Proposal"],
+  preparedFor: "ALLIANCE GROUP INVESTMENT HOLDING COMPANY LTD",
+  preparedForClient: "Alliance Group Investment Holding Company Ltd",
+  preparedForAddress: "Alliance House, 4 Bowker Road, Maseru, Lesotho",
+  preparedForLocation: "Maseru, Lesotho",
   preparedBy: "INFINITY BUSINESS DYNAMICS (PTY) LTD",
   preparedByDisplay: "Infinity Business Dynamics (Pty) Ltd",
   tagline: "Harnessing the Power of Technology",
-  address: "P.O. Box 13145, Maseru 100, Lesotho",
+  address: "Ha Tsosane, Maseru, Lesotho",
   email: "services@ibd.co.ls",
-  phone1: "+266 62554433",
-  phone2: "+266 62553300",
+  phone1: "+266 6255 4433",
+  phone2: "",
   website: "www.ibd.co.ls",
   location: "Maseru, Lesotho",
   tin: "200116903-2",
-  date: "29th of June 2026",
-  reference: "IBD-BWE-EBS-2026-001",
+  date: "July 8th 2026",
+  reference: "IBD-AGIHC-EBS-2026-001",
   accreditation: "Revenue Services Lesotho Accredited Solution Provider",
-  primaryContactName: "Fusi Monyolo",
-  primaryContactRole: "Primary Proposal Contact",
+  primaryContactName: "Infinity Business Dynamics",
+  primaryContactRole: "Proposal Team",
   primaryContactEmail: "services@ibd.co.ls",
-  primaryContactPhone: "+266 62554433",
-  rfqContact: "Fusi Monyolo",
-  rfqContactEmail: "services@ibd.co.ls",
-  keyDates: [] as const,
-};
+  primaryContactPhone: "+266 6255 4433",
+} as const;
 
-const TOC_TITLE_ALIASES: Record<string, string> = {
-  "Why Infinity": "Why Infinity Business Dynamics",
-  "Revenue Services Lesotho Accreditation": "RSL Accreditation & Solution Positioning",
-  "Enterprise Architecture": "Enterprise Solution Architecture",
-  "SAP Integration Architecture": "SAP ERP Integration",
-  "QR Code Framework": "QR Code Management",
-  "Monitoring & Reporting": "Compliance Monitoring & Analytics",
-  "Business Continuity": "Business Continuity & Disaster Recovery",
-  "Project Team": "Project Organisation & Delivery Team",
-  "Testing Strategy": "Testing & Quality Assurance",
-  "User Training": "Training & Change Management",
-  "Support Model": "Support & Managed Services",
-  "Terms & Conditions Acceptance": "Proposal Acceptance",
-};
+const TOC_ENTRIES = tableOfContentsSections.flatMap((s) =>
+  s.entries.map((e) => ({ ...e, section: s.section })),
+);
 
-const TOC_ENTRIES = [
-  "Executive Summary",
-  "Strategic Business Outcomes",
-  "Understanding Barloworld Equipment",
-  "Business Challenges",
-  "About Infinity Business Dynamics",
-  "Why Infinity",
-  "Revenue Services Lesotho Accreditation",
-  "Enterprise Compliance Gateway",
-  "Enterprise Architecture",
-  "SAP Integration Architecture",
-  "CRM Integration",
-  "API Integration Framework",
-  "Motheo Compliance Engine",
-  "Security Architecture",
-  "Transaction Lifecycle",
-  "QR Code Framework",
-  "Monitoring & Reporting",
-  "Business Continuity",
-  "Implementation Methodology",
-  "Project Governance",
-  "Project Team",
-  "Project Timeline",
-  "Testing Strategy",
-  "User Training",
-  "Support Model",
-  "Service Level Commitments",
-  "Risk Management",
-  "Commercial Proposal",
-  "Annual Managed Services",
-  "Supplier Responses",
-  "Terms & Conditions Acceptance",
-  "Barloworld RFQ Annexures",
-  "Mandatory Supporting Documents (RFQ §2)",
-] as const;
-
-export const tableOfContents = TOC_ENTRIES.map((title) => {
-  const slideTitle = TOC_TITLE_ALIASES[title] ?? title;
-  const slideIndex = slideTitles.indexOf(slideTitle as (typeof slideTitles)[number]);
-  return {
-    title,
-    page: slideIndex >= 0 ? slideIndex + 1 : 0,
-  };
-});
+export const tableOfContents = TOC_ENTRIES.map((entry) => ({
+  title: entry.title,
+  page: entry.page,
+}));
 
 export function getTocSectionNumber(slideIndex: number): number | null {
-  const entryIndex = TOC_ENTRIES.findIndex((title) => {
-    const slideTitle = TOC_TITLE_ALIASES[title] ?? title;
-    return slideTitles.indexOf(slideTitle as (typeof slideTitles)[number]) === slideIndex;
-  });
+  const page = slideIndex + 1;
+  const entryIndex = TOC_ENTRIES.findIndex((e) => e.page === page);
   return entryIndex >= 0 ? entryIndex + 1 : null;
 }
 
-export function getAppendixSlideIndex(_appendixIndex: number) {
-  return null;
+export function getAppendixSlideIndex(appendixIndex: number) {
+  return appendixIndex === 0 ? APPENDIX_START_SLIDE - 1 : null;
 }
 
-export function getAppendixIndexForSlide(_slideIndex: number): number | null {
-  return null;
+export function getAppendixIndexForSlide(slideIndex: number): number | null {
+  return slideIndex === APPENDIX_START_SLIDE - 1 ? 0 : null;
 }
 
 export type AppendixItem = (typeof appendices)[number];
 
-/** Legacy flow export for existing visuals */
 export const solutionArchitectureFlow = [
-  "Barloworld Users",
-  "SAP ERP",
-  "CRM",
-  "Infinity Compliance Gateway",
+  "Alliance Group Entities",
+  "Enterprise Compliance Hub",
   "Motheo Compliance Engine",
   "Revenue Services Lesotho",
 ] as const;

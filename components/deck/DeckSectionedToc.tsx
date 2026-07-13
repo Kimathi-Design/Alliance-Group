@@ -39,7 +39,7 @@ export function DeckSectionedTableOfContents() {
         className="deck-toc__grid grid min-h-0 flex-1"
         style={{
           gridTemplateColumns: "2.25rem auto 1fr 3rem",
-          gridTemplateRows: `repeat(${TOC_ROWS.length}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${TOC_ROWS.length}, minmax(1.3em, 1fr))`,
         }}
       >
         {TOC_ROWS.map((row, rowIndex) => {
@@ -49,8 +49,8 @@ export function DeckSectionedTableOfContents() {
             return (
               <p
                 key={row.key}
-                className="deck-toc__section self-end"
-                style={{ gridColumn: "2 / -1", gridRow }}
+                className="deck-toc__section self-center justify-self-start text-left"
+                style={{ gridColumn: 2, gridRow }}
               >
                 {row.label}
               </p>
@@ -60,23 +60,23 @@ export function DeckSectionedTableOfContents() {
           return (
             <Fragment key={row.key}>
               <span
-                className="deck-toc__index self-end pr-2 text-right tabular-nums"
+                className="deck-toc__index self-center pr-2 text-right tabular-nums"
                 style={{ gridColumn: 1, gridRow }}
               >
                 {String(row.index).padStart(2, "0")}
               </span>
-              <span className="deck-toc__title self-end pr-2" style={{ gridColumn: 2, gridRow }}>
+              <span className="deck-toc__title self-center pr-2" style={{ gridColumn: 2, gridRow }}>
                 {row.title}
               </span>
               <span
                 aria-hidden
-                className="deck-toc__leaders self-end overflow-hidden pr-3 pb-px"
+                className="deck-toc__leaders self-center overflow-hidden pr-3"
                 style={{ gridColumn: 3, gridRow }}
               >
                 {".".repeat(120)}
               </span>
               <span
-                className="deck-toc__page self-end text-right tabular-nums"
+                className="deck-toc__page self-center text-right tabular-nums"
                 style={{ gridColumn: 4, gridRow }}
               >
                 {String(row.page).padStart(2, "0")}

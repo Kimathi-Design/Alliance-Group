@@ -4,11 +4,13 @@ import {
   Activity,
   AlertCircle,
   AlertTriangle,
+  Archive,
   Award,
   BadgeCheck,
   Banknote,
   BarChart3,
   BookOpen,
+  Briefcase,
   Building,
   Building2,
   CheckCircle2,
@@ -43,11 +45,13 @@ import {
   PenLine,
   Plug,
   QrCode,
+  Receipt,
   RefreshCw,
   Rocket,
   Scale,
   Search,
   Server,
+  Settings,
   Shield,
   ShieldCheck,
   Sparkles,
@@ -212,6 +216,14 @@ export const BWE_HUB_UNIT_ICONS = [
   MapPin,
   Banknote,
   Users,
+] as const;
+
+export const EXECUTIVE_SUMMARY_TRANSFORMATION_ICONS = [
+  Building2,
+  Database,
+  ShieldCheck,
+  Scale,
+  Rocket,
 ] as const;
 
 export const EXECUTIVE_SUMMARY_CURRENT_ICONS = [
@@ -738,11 +750,230 @@ export const GANTT_PHASE_ICONS = [
   Headphones,
 ] as const;
 
-export const DHL_STANDARDS_CARD_ICONS = [
-  FileText,
-  Handshake,
-  Lock,
+export const ALLIANCE_STRATEGIC_ICONS = [
+  Shield,
+  Banknote,
+  BarChart3,
+  Workflow,
+  Rocket,
+] as const;
+
+export const ALLIANCE_ENTITY_ICONS = [
+  Building2,
+  Users,
+  Cloud,
+  Briefcase,
+] as const;
+
+export const ALLIANCE_OPTION_ICONS = [
+  Server,
+  Network,
+  Users,
+  FileBadge,
+  TrendingUp,
+  RefreshCw,
+] as const;
+
+export const ALLIANCE_HUB_ICONS = [
+  Layers,
+  ShieldCheck,
+  BarChart3,
+  Network,
+  ClipboardCheck,
+  Sparkles,
+  Scale,
+  Globe,
+] as const;
+
+export const ALLIANCE_CREDENTIAL_ICONS = [
+  FileBadge,
+  Scale,
+  MapPin,
+  Building2,
+  BadgeCheck,
+  Globe,
+] as const;
+
+export const ALLIANCE_WHY_ICONS = [
+  BadgeCheck,
+  Plug,
+  Layers,
+  Award,
+] as const;
+
+export const ALLIANCE_EXPERIENCE_ICONS = [
+  Network,
+  Building2,
+  Cloud,
+  Workflow,
   PenLine,
+  Headphones,
+] as const;
+
+export const ALLIANCE_TEAM_ICONS = [
+  Layers,
+  ShieldCheck,
+  Network,
+  Target,
+] as const;
+
+export const ALLIANCE_OUTCOME_ICONS = [
+  Layers,
+  ShieldCheck,
+  Plug,
+  BarChart3,
+  Server,
+  Network,
+] as const;
+
+export const ALLIANCE_PORTAL_ICONS = [
+  Users,
+  FileText,
+  ShieldCheck,
+  PenLine,
+  BarChart3,
+  Lock,
+] as const;
+
+export const ALLIANCE_TIN_ICONS = [
+  Users,
+  PenLine,
+  ShieldCheck,
+  Globe,
+  CheckCircle2,
+  AlertCircle,
+] as const;
+
+export const ALLIANCE_LIFECYCLE_ICONS = [
+  PenLine,
+  ShieldCheck,
+  Scale,
+  QrCode,
+  Globe,
+  CheckCircle2,
+  FolderOpen,
+  ClipboardCheck,
+  FileCheck,
+  Archive,
+] as const;
+
+export const ALLIANCE_CREDIT_ICONS = [
+  Search,
+  FileBadge,
+  ShieldCheck,
+  QrCode,
+  Globe,
+  CheckCircle2,
+  FolderOpen,
+  ClipboardCheck,
+] as const;
+
+export const ALLIANCE_DEBIT_ICONS = [
+  FileText,
+  PenLine,
+  ShieldCheck,
+  QrCode,
+  Globe,
+  CheckCircle2,
+  FolderOpen,
+  ClipboardCheck,
+] as const;
+
+export const ALLIANCE_QR_ICONS = [
+  FileText,
+  BadgeCheck,
+  Users,
+  Clock,
+  Globe,
+  FileSignature,
+] as const;
+
+export const ALLIANCE_DASHBOARD_ICONS = [
+  BarChart3,
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+  Activity,
+  TrendingUp,
+  ShieldCheck,
+  Server,
+  Users,
+] as const;
+
+export const ALLIANCE_USER_ICONS = [
+  Award,
+  Building2,
+  FileText,
+  Receipt,
+  ShieldCheck,
+  Eye,
+] as const;
+
+export const ALLIANCE_AUDIT_ICONS = [
+  Users,
+  FileText,
+  ClipboardCheck,
+  ShieldCheck,
+  QrCode,
+  Globe,
+  Settings,
+  Lock,
+] as const;
+
+export const ALLIANCE_ROLLOUT_ICONS = [
+  Server,
+  Building2,
+  Users,
+  Cloud,
+  Briefcase,
+  BarChart3,
+] as const;
+
+export const ALLIANCE_COMMERCIAL_ICONS = [
+  Layers,
+  Banknote,
+  Target,
+  Rocket,
+  Handshake,
+] as const;
+
+export const ALLIANCE_LICENCE_ICONS = [
+  Layers,
+  Scale,
+  Users,
+  BarChart3,
+  QrCode,
+  Globe,
+  Network,
+  ClipboardCheck,
+] as const;
+
+export const ALLIANCE_TCO_ICONS = [
+  Banknote,
+  Users,
+  BarChart3,
+  Rocket,
+  TrendingUp,
+] as const;
+
+export const ALLIANCE_ROI_ICONS = [
+  Workflow,
+  BarChart3,
+  Shield,
+  ClipboardCheck,
+  Eye,
+  Rocket,
+] as const;
+
+export const ALLIANCE_CONCLUSION_ICONS = [
+  Shield,
+  Workflow,
+  ShieldCheck,
+  Banknote,
+  Eye,
+  Scale,
+  Rocket,
+  Handshake,
 ] as const;
 
 export const APPENDIX_ICONS = [

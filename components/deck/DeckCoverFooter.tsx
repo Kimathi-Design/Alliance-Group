@@ -1,4 +1,4 @@
-import { BweFooterLogo } from "@/components/deck/IbdMark";
+import { AllianceFooterLogo } from "@/components/deck/IbdMark";
 import { SlideSectionCorner } from "@/components/deck/SlideEyebrow";
 import { coverMeta } from "@/lib/deck-content";
 
@@ -95,7 +95,7 @@ export function DeckCoverFooter() {
           <div className="deck-cover-footer__lines">
             <div className="deck-cover-footer__client-row">
               <div className="deck-cover-footer__client-logo">
-                <BweFooterLogo className="h-10" />
+                <AllianceFooterLogo className="h-10" />
               </div>
               <p className="deck-cover-footer__client">{coverMeta.preparedFor}</p>
             </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import { ArrowDown, ArrowRight, BadgeCheck, CheckCircle2, QrCode, Rocket } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
+import { MotheoMark } from "@/components/deck/IbdMark";
 import { ASSETS } from "@/lib/assets";
 import {
   deckIcon,
@@ -27,7 +28,6 @@ import {
   SECURITY_FLOW_ICONS,
   SECURITY_BADGE_ICONS,
   GOVERNANCE_STRUCTURE_ICONS,
-  SUPPLIER_RESPONSE_ICONS,
   MOTHEO_RADIAL_NODE_ICONS,
   SAP_INTEGRATION_FLOW_ICONS,
   SAP_INTEGRATION_SIDE_ICONS,
@@ -35,7 +35,7 @@ import {
   SOLUTION_ECOSYSTEM_STEP_ICONS,
 } from "@/components/deck/deck-icons";
 import { DeckVisualPanelLabel } from "@/components/deck/DeckSlideFrame";
-import { escalationLevels, governanceStructure, securityBadges, securityFlow, serviceLevels } from "@/lib/deck-content";
+import { escalationLevels, governanceStructure, securityBadges, securityFlow, slaTableRows as serviceLevels } from "@/lib/deck-content";
 
 function FlowArrow({ horizontal = false }: { horizontal?: boolean }) {
   return (
@@ -92,6 +92,7 @@ export function VerticalFlowDiagram({
         const title = typeof item === "string" ? item : item.title;
         const description = typeof item === "string" ? undefined : item.description;
         const Icon = icons?.[index] ?? icons?.[icons.length - 1];
+        const showMotheoMark = title.includes("Motheo");
 
         return (
           <div
@@ -132,8 +133,14 @@ export function VerticalFlowDiagram({
                     <p
                       className={`deck-flow-step-card__title${
                         compact ? " deck-flow-step-card__title--compact" : ""
+                      }${
+                        showMotheoMark
+                          ? " inline-flex w-full items-center gap-2" +
+                            (centerContent ? " justify-center" : "")
+                          : ""
                       }`}
                     >
+                      {showMotheoMark ? <MotheoMark size="sm" className="!h-3.5" /> : null}
                       {title}
                     </p>
                     {description && (
@@ -337,12 +344,45 @@ function SplitCompareCard({
   index,
   icon,
   numberTone = "accent",
+  layout = "row",
 }: {
-  item: string;
+  item: string | readonly string[];
   index: number;
   icon?: LucideIcon;
   numberTone?: "accent" | "green";
+  layout?: "row" | "stacked";
 }) {
+  const paragraphs = typeof item === "string" ? [item] : [...item];
+  const primary = paragraphs[0] ?? "";
+
+  if (layout === "stacked") {
+    return (
+      <div className="deck-split-compare-card deck-split-compare-card--stacked gms-card flex min-h-0 flex-1 flex-col rounded-2xl">
+        {icon && (
+          <div className="deck-flow-step-card__tile deck-flow-step-card__tile--compact deck-split-compare-card__icon">
+            {deckIcon(icon, "sm")}
+          </div>
+        )}
+        <div className="deck-split-compare-card__copy">
+          {paragraphs.map((paragraph) => (
+            <p key={paragraph} className="deck-type-card-body deck-split-compare-card__text">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+        <div className="deck-flow-step-card__tile deck-flow-step-card__tile--compact deck-split-compare-card__num-tile">
+          <span
+            className={`deck-split-compare-card__num tabular-nums${
+              numberTone === "green" ? " text-[color:var(--ibd-green)]" : ""
+            }`}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="deck-split-compare-card deck-flow-step-card gms-card flex min-h-0 flex-1 flex-col justify-center rounded-2xl p-2.5">
       <div className="deck-flow-step-card__row">
@@ -357,7 +397,7 @@ function SplitCompareCard({
             </span>
           </FlowStepTile>
         </div>
-        <p className="deck-flow-step-card__title deck-flow-step-card__title--compact">{item}</p>
+        <p className="deck-flow-step-card__title deck-flow-step-card__title--compact">{primary}</p>
         {icon && (
           <div className="deck-flow-step-card__icon-col deck-flow-step-card__icon-col--compact">
             <FlowStepTile compact>{deckIcon(icon, "sm")}</FlowStepTile>
@@ -379,7 +419,7 @@ export function SplitCompareDiagram({
   leftTitle: string;
   rightTitle: string;
   leftItems: readonly string[];
-  rightItems: readonly string[];
+  rightItems: readonly (string | readonly string[])[];
   leftIcons?: readonly LucideIcon[];
   rightIcons?: readonly LucideIcon[];
 }) {
@@ -390,7 +430,7 @@ export function SplitCompareDiagram({
         <div className="deck-split-compare__list flex min-h-0 flex-1 flex-col gap-2">
           {leftItems.map((item, index) => (
             <SplitCompareCard
-              key={item}
+              key={typeof item === "string" ? item : item[0]}
               item={item}
               index={index}
               icon={leftIcons?.[index] ?? leftIcons?.[leftIcons.length - 1]}
@@ -398,16 +438,17 @@ export function SplitCompareDiagram({
           ))}
         </div>
       </div>
-      <div className="flex min-h-0 flex-col gap-2">
+      <div className="deck-split-compare__solution flex min-h-0 flex-col gap-2">
         <DeckVisualPanelLabel>{rightTitle}</DeckVisualPanelLabel>
         <div className="deck-split-compare__list flex min-h-0 flex-1 flex-col gap-2">
           {rightItems.map((item, index) => (
             <SplitCompareCard
-              key={item}
+              key={typeof item === "string" ? item : item[0]}
               item={item}
               index={index}
               icon={rightIcons?.[index] ?? rightIcons?.[rightIcons.length - 1]}
               numberTone="green"
+              layout="stacked"
             />
           ))}
         </div>
@@ -515,7 +556,7 @@ function GovernanceRoleCard({
   icon: LucideIcon;
 }) {
   return (
-    <div className="governance-framework-visual__card gms-card flex min-h-0 flex-1 flex-col rounded-2xl">
+    <div className="governance-framework-visual__card gms-card flex h-full min-h-0 flex-col rounded-2xl">
       <div className="governance-framework-visual__card-head flex items-center">
         <FlowStepTile>
           <span className="governance-framework-visual__number deck-flow-step-card__number deck-flow-step-card__number--compact tabular-nums">
@@ -539,9 +580,9 @@ export function GovernanceFrameworkVisual() {
   const workstreams = governanceStructure.slice(3);
 
   return (
-    <div className="governance-framework-visual flex h-full min-h-0 w-full flex-col overflow-hidden">
+    <div className="governance-framework-visual flex h-full min-h-0 w-full flex-col">
       <DeckVisualPanelLabel>Governance Structure</DeckVisualPanelLabel>
-      <div className="governance-framework-visual__sections flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
+      <div className="governance-framework-visual__sections flex min-h-0 flex-1 flex-col">
         <div className="governance-framework-visual__section flex min-h-0 flex-1 flex-col gap-1.5">
           <p className="governance-framework-visual__section-label deck-type-premium-label">
             Executive Oversight
@@ -584,6 +625,12 @@ export function GovernanceFrameworkVisual() {
 }
 
 const HUB_SPOKE_LAYOUTS: Record<number, readonly { x: number; y: number }[]> = {
+  4: [
+    { x: 26, y: 14 },
+    { x: 74, y: 14 },
+    { x: 74, y: 72 },
+    { x: 26, y: 72 },
+  ],
   7: [
     { x: 50, y: 12 },
     { x: 80, y: 20 },
@@ -677,13 +724,14 @@ export function HubSpokeDiagram({
           </svg>
 
           <div
-            className="hub-spoke-visual__center gms-card absolute z-20 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center"
+            className="hub-spoke-visual__center gms-card absolute z-30 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center"
+            style={{ left: `${hubX}%`, top: `${hubY}%` }}
           >
             <Image
-              src={ASSETS.brands.bweLogo}
+              src={ASSETS.brands.allianceLogo}
               alt=""
-              width={1799}
-              height={483}
+              width={1200}
+              height={400}
               aria-hidden
               className="hub-spoke-visual__center-logo relative z-10 shrink-0 object-contain"
             />
@@ -1567,7 +1615,7 @@ export function SlaPriorityVisual({
   levels?: readonly (readonly [string, string, string, string])[];
 }) {
   return (
-    <div className="sla-priority-visual flex min-h-0 w-full shrink-0 flex-col">
+    <div className="sla-priority-visual flex h-full min-h-0 w-full flex-col">
       <DeckVisualPanelLabel>SLA Priority Matrix</DeckVisualPanelLabel>
       <div className="sla-priority-visual__strip flex min-h-0 flex-1 items-stretch">
         {levels.map(([priority, description, response, resolution], index) => (
@@ -1597,14 +1645,14 @@ export function SlaPriorityVisual({
 
 export function SlaEscalationVisual() {
   return (
-    <div className="sla-escalation-visual flex h-full min-h-0 w-full flex-col gap-3 overflow-hidden">
-      <SlaPriorityVisual />
-      <div className="sla-escalation-visual__path flex min-h-0 flex-1 flex-col overflow-hidden">
+    <div className="sla-escalation-visual grid h-full min-h-0 w-full grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] gap-3 overflow-hidden">
+      <div className="sla-escalation-visual__path flex min-h-0 flex-col overflow-hidden">
         <DeckVisualPanelLabel>Escalation Model</DeckVisualPanelLabel>
         <div className="sla-escalation-visual__escalation min-h-0 flex-1">
           <EscalationDiagram levels={escalationLevels} />
         </div>
       </div>
+      <SlaPriorityVisual />
     </div>
   );
 }
@@ -1726,31 +1774,17 @@ export function ComplianceMatrix({
   items: readonly (readonly [string, string])[];
 }) {
   return (
-    <div className="compliance-matrix-visual flex h-full min-h-0 w-full flex-1 flex-col">
-      {items.map(([requirement, response], index) => (
-        <div key={requirement} className="compliance-matrix-visual__row flex min-h-0 flex-1">
-          <div className="compliance-matrix-visual__card gms-card flex h-full w-full min-h-0 rounded-2xl">
-            <FlowStepTile compact>
-              <span className="compliance-matrix-visual__number tabular-nums">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-            </FlowStepTile>
-            <p className="compliance-matrix-visual__requirement">{requirement}</p>
-            <span className="compliance-matrix-visual__status">
-              {deckIcon(CheckCircle2, "sm")}
-              {response}
-            </span>
-            <FlowStepTile compact>
-              {deckIcon(
-                SUPPLIER_RESPONSE_ICONS[index] ??
-                  SUPPLIER_RESPONSE_ICONS[SUPPLIER_RESPONSE_ICONS.length - 1]!,
-                "md",
-              )}
-            </FlowStepTile>
-          </div>
-        </div>
+    <ul className="compliance-matrix-visual">
+      {items.map(([requirement, response]) => (
+        <li key={requirement} className="compliance-matrix-visual__item">
+          <span className="deck-bullet shrink-0" aria-hidden />
+          <p className="deck-type-body compliance-matrix-visual__text">
+            <span className="font-semibold">{requirement}</span>
+            <span className="font-medium text-[color:var(--gms-text-muted)]"> — {response}</span>
+          </p>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -1886,20 +1920,20 @@ export function ValueCardsVisual({
   icons?: readonly LucideIcon[];
 }) {
   return (
-    <div className="grid h-full min-h-0 flex-1 grid-cols-2 gap-2 content-start overflow-auto">
-      {items.map((item, index) => (
-        <div key={item.title} className="gms-card rounded-lg p-4">
-          {icons?.[index] && (
-            <div className="deck-flow-step-card__tile deck-flow-step-card__tile--compact mb-2">
-              {deckIcon(icons[index], "sm")}
-            </div>
-          )}
-          <p className="deck-type-card-title">{item.title}</p>
-          <p className="deck-type-card-body mt-1 text-[color:var(--gms-text-muted)]">
-            {item.description}
-          </p>
-        </div>
-      ))}
+    <div className="value-cards-visual">
+      <div className="value-cards-visual__grid">
+        {items.map((item, index) => (
+          <div key={item.title} className="value-cards-visual__card gms-card rounded-2xl">
+            {icons?.[index] && (
+              <div className="deck-flow-step-card__tile deck-flow-step-card__tile--compact value-cards-visual__icon">
+                {deckIcon(icons[index], "sm")}
+              </div>
+            )}
+            <p className="deck-type-card-title value-cards-visual__title">{item.title}</p>
+            <p className="deck-type-card-body value-cards-visual__body">{item.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

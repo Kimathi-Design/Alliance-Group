@@ -7032,6 +7032,41 @@ html:not(.light) {
   page-break-after: always;
   break-after: page;
 }
+/* PDF/print export: edge-to-edge pages matching live slide content (no floating card chrome) */
+html[data-deck-export="true"] {
+  --gms-card-shadow: none;
+  --gms-card-shadow-hover: none;
+}
+html[data-deck-export="true"] .deck-print-root,
+html[data-deck-export="true"] .deck-print-slide,
+html[data-deck-export="true"] .deck-stage {
+  background: #ffffff;
+}
+html[data-deck-export="true"] .deck-slide {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html[data-deck-export="true"] .gms-card,
+html[data-deck-export="true"] .deck-cover-footer__card,
+html[data-deck-export="true"] .deck-visual-panel,
+html[data-deck-export="true"] .deck-type-card,
+html[data-deck-export="true"] [class*="shadow-"] {
+  box-shadow: none !important;
+  filter: none;
+}
+@media print {
+  .deck-slide {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .gms-card,
+  .deck-cover-footer__card,
+  .deck-visual-panel {
+    box-shadow: none !important;
+  }
+}
 @page {
   size: 1240px 1754px;
   margin: 0;

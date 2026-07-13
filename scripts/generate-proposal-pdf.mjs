@@ -16,6 +16,8 @@ const submissionPdfMergeOrder = [
   "mandatory-vat-registration-certificate.pdf",
 ];
 
+const SLIDE_WIDTH = 1240;
+const SLIDE_HEIGHT = 1754;
 const outputPath = join(process.cwd(), "public/Alliance-Group-Motheo-Proposal.pdf");
 const port = Number(process.env.DECK_PORT ?? 3010);
 const baseUrl = process.env.DECK_URL ?? `http://localhost:${port}`;
@@ -46,25 +48,58 @@ if (!process.env.DECK_URL) {
 }
 
 const browser = await chromium.launch();
-const page = await browser.newPage();
+const page = await browser.newPage({
+  viewport: { width: SLIDE_WIDTH, height: SLIDE_HEIGHT },
+  deviceScaleFactor: 2,
+});
 
 try {
   console.log(`Rendering slides from ${printUrl}...`);
-  await page.goto(printUrl, { waitUntil: "networkidle", timeout: 120_000 });
+  // Screen media so PDF matches the live deck (not print stylesheet quirks)
+  await page.emulateMedia({ media: "screen" });
+  await page.goto(printUrl, { waitUntil: "networkidle", timeout: 180_000 });
   await page.waitForFunction(() => document.fonts.ready);
-  await page.waitForTimeout(1500);
+  await page.waitForFunction(
+    () => document.documentElement.dataset.deckExport === "true",
+  );
+  // Let cover images / charts settle
+  await page.waitForTimeout(2500);
 
-  const slidesPath = join(tmpdir(), "alliance-proposal-slides.pdf");
-  await page.emulateMedia({ media: "print" });
-  await page.pdf({
-    path: slidesPath,
-    printBackground: true,
-    preferCSSPageSize: true,
-    margin: { top: 0, right: 0, bottom: 0, left: 0 },
-  });
+  const slideLocators = page.locator(".deck-print-slide");
+  const slideCount = await slideLocators.count();
+  if (slideCount === 0) {
+    throw new Error("No .deck-print-slide elements found on /print");
+  }
+  console.log(`Capturing ${slideCount} slides as screen screenshots...`);
+
+  const pdfDoc = await PDFDocument.create();
+
+  for (let i = 0; i < slideCount; i++) {
+    const slide = slideLocators.nth(i);
+    await slide.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(i === 0 ? 800 : 120);
+
+    // Prefer the actual slide surface; fall back to the print frame
+    const target = slide.locator("section.deck-slide").first();
+    const hasSlide = (await target.count()) > 0;
+    const jpgBytes = await (hasSlide ? target : slide).screenshot({
+      type: "jpeg",
+      quality: 92,
+      animations: "disabled",
+    });
+
+    const image = await pdfDoc.embedJpg(jpgBytes);
+    const pdfPage = pdfDoc.addPage([SLIDE_WIDTH, SLIDE_HEIGHT]);
+    pdfPage.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: SLIDE_WIDTH,
+      height: SLIDE_HEIGHT,
+    });
+    console.log(`  ✓ slide ${i + 1}/${slideCount}`);
+  }
 
   console.log("Merging appendix PDFs...");
-  const pdfDoc = await PDFDocument.load(readFileSync(slidesPath));
   const appendicesDir = join(process.cwd(), "public/appendices");
 
   for (const file of submissionPdfMergeOrder) {

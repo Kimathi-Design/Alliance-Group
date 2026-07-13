@@ -81,7 +81,7 @@ Rather than implementing multiple independent compliance solutions, Infinity Bus
 
 As an accredited Revenue Services Lesotho Electronic Billing Solution provider, we are committed to delivering a platform that meets current regulatory requirements while providing the enterprise integration capability your Group requires.
 
-This approach provides a single compliance platform capable of supporting all Alliance Group entities while integrating seamlessly with existing systems including MDA/MRI Property Management, Xero Accounting, existing operational platforms and a proposed standalone billing portal for AGIHC.
+This approach provides a single compliance platform capable of supporting all Alliance Group entities — integrating MDA/MRI Property Management and Xero Accounting, deploying Zoho Elite with Motheo POS for Lehae Funeral Home's multi-branch operations, and providing a standalone billing portal for AGIHC.
 
 The proposal further details customer TIN validation, invoice lifecycle management, credit and debit note processing, QR code generation, executive dashboards, user administration and comprehensive audit trails — all delivered through one central compliance platform.
 
@@ -141,7 +141,7 @@ Harnessing the Power of Technology
 | 16 | Enterprise Compliance Hub Overview |
 | 17 | Multi-Entity Solution Architecture |
 | 18 | Properties (MDA/MRI) Integration |
-| 19 | Lehae Funeral Home Integration |
+| 19 | Lehae Funeral Home — Zoho Elite / Motheo POS |
 | 20 | Finclude Lesotho (Xero) Integration |
 | 21 | AGIHC Standalone Billing Portal |
 | 22 | Customer TIN Validation |
@@ -315,7 +315,7 @@ Infinity Business Dynamics has therefore designed a solution that preserves the 
 | Entity | Sector | System |
 |--------|--------|--------|
 | Properties | Property Management | MDA/MRI |
-| Lehae Funeral Home | Funeral Services | Operational Management System |
+| Lehae Funeral Home | Funeral Services | Zoho Elite + Motheo POS (existing systems retained, not integrated) |
 | Finclude Lesotho | Financial Services | Xero Accounting |
 | AGIHC | Holding Company | No Billing System — Standalone Billing Portal |
 
@@ -341,14 +341,14 @@ Each connected to: Enterprise Compliance Hub
 
 **Existing Systems Assessment**
 
-Following our review of Alliance Group's operating environment, we identified four distinct technology environments requiring integration with the Revenue Services Lesotho Electronic Billing platform.
+Following our review of Alliance Group's operating environment, we identified four distinct technology environments requiring a compliant Revenue Services Lesotho Electronic Billing pathway.
 
-Each environment presents unique integration requirements while sharing common compliance objectives.
+Each environment presents unique requirements while sharing common compliance objectives — including Lehae Funeral Home, where existing systems will be retained but not integrated.
 
 | Entity | Current Software | Proposed Integration |
 |--------|------------------|-------------------|
 | Properties | MDA/MRI | API Integration |
-| Lehae Funeral Home | Existing Operational System | API Integration |
+| Lehae Funeral Home | Existing systems (not integrated) | Motheo POS / Zoho Elite |
 | Finclude Lesotho | Xero | Native Integration |
 | AGIHC | None | Standalone Billing Portal |
 
@@ -474,9 +474,9 @@ Comparison table:
 
 The Enterprise Compliance Hub acts as the central integration and compliance platform for all participating Alliance Group entities.
 
-Each business continues to operate its existing software while the Hub manages transaction validation, fiscalisation, QR code generation, submission to Revenue Services Lesotho and centralised compliance monitoring.
+Each business follows the pathway best suited to its operations — extending MDA/MRI and Xero where integration is preferred, deploying Zoho Elite with Motheo POS for Lehae's multi-branch frontline, and providing a standalone portal for AGIHC — while the Hub manages validation, fiscalisation, QR code generation, RSL submission and centralised monitoring.
 
-This architecture ensures that compliance is standardised across the Group without disrupting existing operational systems.
+This architecture standardises compliance across the Group without forcing a single operational system on every entity.
 
 **Enterprise Compliance Hub Provides**
 
@@ -498,7 +498,7 @@ Full-page enterprise architecture:
 ```
 Alliance Group
 ├── Properties (MDA/MRI)
-├── Lehae Funeral Home
+├── Lehae (Zoho Elite / Motheo POS)
 ├── Finclude (Xero)
 └── AGIHC Billing Portal
             │
@@ -621,7 +621,7 @@ Beyond go-live, our managed services capability provides ongoing platform monito
 - **Multi-Entity Compliance** — Group-wide electronic billing implementations across diverse business systems.
 - **Property Management Integration** — API integration with property management and rental billing platforms.
 - **Cloud Accounting Integration** — Native Xero and cloud accounting platform connectivity.
-- **Operational System Integration** — Middleware and API integration with bespoke operational platforms.
+- **Multi-Branch POS & Zoho** — Zoho Elite with Motheo POS for multi-location frontline billing and compliance.
 - **Standalone Billing Portals** — Purpose-built web billing applications with full fiscal compliance.
 - **Managed Services** — Long-term platform monitoring, support and regulatory update management.
 
@@ -678,7 +678,7 @@ Infinity Business Dynamics recommends implementing a single Enterprise Complianc
 
 The platform enables each business to continue operating its preferred business application while automating compliance with Revenue Services Lesotho's Electronic Billing System (EBS) and Lekuka IDMS.
 
-Rather than replacing existing software, the Compliance Hub extends current systems with enterprise-grade compliance capabilities through secure APIs and a central compliance engine.
+Rather than forcing a single operational system across the Group, the Compliance Hub connects each entity through the pathway that fits — API integration, native connectors, Zoho Elite with Motheo POS, or a standalone billing portal — while sharing one accredited fiscalisation engine.
 
 This approach significantly reduces implementation costs, simplifies support and establishes a scalable compliance architecture capable of supporting future subsidiaries.
 
@@ -816,42 +816,43 @@ Property Manager → MDA/MRI → Compliance Hub → Motheo → Revenue Services 
 
 ---
 
-## Page 19 — Lehae Funeral Home Integration
+## Page 19 — Lehae Funeral Home — Zoho Elite / Motheo POS
 
 ### Copy
 
-**LEHAE FUNERAL HOME INTEGRATION**
+**LEHAE FUNERAL HOME — ZOHO ELITE / MOTHEO POS**
 
-**Connecting Existing Operational Systems**
+**Frontline Compliance with Zoho Elite & Motheo POS**
 
-Lehae Funeral Home currently operates an existing operational platform supporting its business activities.
+Lehae Funeral Home currently operates existing operational systems across its business. These systems will be retained for day-to-day operations, but Alliance Group does not intend to integrate them with the compliance platform.
 
-The proposed solution integrates this system with the Enterprise Compliance Hub through secure APIs or middleware services, enabling compliant invoice generation without requiring replacement of the current application.
+Infinity Business Dynamics therefore proposes Motheo POS with Zoho Elite as the frontline billing and compliance solution for Lehae. Zoho Elite is multi-locational and a strategic fit for Lehae's nine branches, while Motheo POS enables compliant fiscalisation at the point of sale.
 
-This approach protects previous technology investments while ensuring compliance with Revenue Services Lesotho requirements.
+Invoices captured through Zoho Elite / Motheo POS are processed via the Enterprise Compliance Hub for validation, fiscalisation, QR code generation and submission to Revenue Services Lesotho — delivering Group-wide compliance without integrating legacy operational systems.
 
-**Integration Features**
+**Solution Features**
 
+- Multi-branch Zoho Elite deployment (9 locations)
+- Motheo POS at the frontline
 - Customer TIN validation
-- Invoice submission
-- Credit notes
-- Debit notes
+- Invoice, credit and debit note processing
 - QR code generation
-- Reporting
+- Centralised compliance reporting
 
 **Business Benefits**
 
-- Protect existing investment
-- Automated compliance
-- Simplified operations
-- Reduced implementation risk
+- Multi-location ready for 9 branches
+- No legacy system integration required
+- Frontline Motheo POS compliance
+- Strategic Zoho Elite platform fit
+- Unified Group compliance reporting
 
 ### Visual Direction
 
 System workflow:
 
 ```
-Operational System → API Gateway → Enterprise Compliance Hub → Revenue Services Lesotho
+Motheo POS / Zoho Elite → Enterprise Compliance Hub → Motheo → Revenue Services Lesotho
 ```
 
 ---
@@ -1811,7 +1812,7 @@ The following commercial structure represents the proposed investment required t
 | Item | Description | Amount (LSL) |
 |------|-------------|-------------:|
 | MDA Managed Compliance Service | Annual managed compliance licensing and support for MDA/MRI | 65,000.00 |
-| Zoho Elite — Lehae Funeral Home | Multi-branch invoicing and accounting with compliance layer for 9 branches, including POS modules as required | 120,000.00 |
+| Zoho Elite — Lehae Funeral Home | Multi-branch Zoho Elite with Motheo POS for 9 locations — frontline fiscalisation without integrating legacy operational systems | 120,000.00 |
 | Xero Compliance Engine — Finclude | Annual compliance management service for Finclude Lesotho | 35,000.00 |
 
 **Investment Summary**
@@ -2194,7 +2195,7 @@ The table below demonstrates compliance with each key requirement.
 | Audit Trails | ✔ Included |
 | MDA/MRI Integration | ✔ Supported |
 | Xero Integration | ✔ Supported |
-| Existing Lehae Operational System Integration | ✔ Supported |
+| Lehae Motheo POS / Zoho Elite Deployment | ✔ Included |
 | Standalone Billing Portal for AGIHC | ✔ Included |
 | Training | ✔ Included |
 | Post-Implementation Support | ✔ Included |
@@ -2309,7 +2310,7 @@ The following supporting documentation accompanies this proposal.
 | A | Revenue Services Lesotho Accreditation Certificate |
 | B | Motheo Integrator Guide |
 | C | Enterprise Solution Architecture |
-| D | Entity Integration Architecture (MDA/MRI, Xero, Lehae, AGIHC) |
+| D | Entity Integration Architecture (MDA/MRI, Xero, Zoho Elite/Motheo POS, AGIHC) |
 | E | Implementation Methodology |
 | F | Commercial Pricing Schedule |
 | G | Company Registration Documents |

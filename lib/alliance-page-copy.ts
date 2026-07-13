@@ -20,7 +20,7 @@ export const alliancePageBodies = {
       "Infinity Business Dynamics appreciates the opportunity to submit this proposal for the implementation of a Group-wide Revenue Services Lesotho compliant Electronic Billing Solution for Alliance Group Investment Holding Company Ltd and its subsidiary companies.",
       "Having reviewed your requirements, we recognise that Alliance Group operates a diverse technology landscape consisting of multiple business entities, each with unique operational systems and billing processes. While these entities operate independently, they share a common obligation to comply with Revenue Services Lesotho's VAT Electronic Invoicing Regulations and Lekuka IDMS requirements.",
       "Rather than implementing multiple independent compliance solutions, Infinity Business Dynamics recommends the deployment of a unified Enterprise Compliance Hub powered by the accredited Motheo Compliance Engine.",
-      "This approach provides a single compliance platform capable of supporting all Alliance Group entities while integrating seamlessly with existing systems including MDA/MRI Property Management, Xero Accounting, existing operational platforms and a proposed standalone billing portal for AGIHC.",
+      "This approach provides a single compliance platform capable of supporting all Alliance Group entities — integrating MDA/MRI Property Management and Xero Accounting, deploying Zoho Elite with Motheo POS for Lehae Funeral Home's multi-branch operations, and providing a standalone billing portal for AGIHC.",
       "The recommended architecture significantly reduces operational complexity, lowers the total cost of ownership and establishes a scalable platform capable of supporting future business growth across the Group.",
       "We appreciate the opportunity to present this proposal and look forward to partnering with Alliance Group in delivering a modern, secure and future-ready compliance platform.",
       "Yours faithfully, Infinity Business Dynamics (Pty) Ltd Harnessing the Power of Technology"
@@ -90,7 +90,7 @@ export const alliancePageBodies = {
     paragraphs: [
       "The Enterprise Compliance Hub acts as the central integration and compliance platform for all participating Alliance Group entities.",
       "Each business continues to operate its existing software while the Hub manages transaction validation, fiscalisation, QR code generation, submission to Revenue Services Lesotho and centralised compliance monitoring.",
-      "This architecture ensures that compliance is standardised across the Group without disrupting existing operational systems."
+      "This architecture standardises compliance across the Group without forcing a single operational system on every entity."
     ],
   },
   11: {
@@ -151,11 +151,11 @@ export const alliancePageBodies = {
     ],
   },
   19: {
-    title: "Lehae Funeral Home Integration",
+    title: "Lehae Funeral Home — Zoho Elite / Motheo POS",
     paragraphs: [
-      "Lehae Funeral Home currently operates an existing operational platform supporting its business activities.",
-      "The proposed solution integrates this system with the Enterprise Compliance Hub through secure APIs or middleware services, enabling compliant invoice generation without requiring replacement of the current application.",
-      "This approach protects previous technology investments while ensuring compliance with Revenue Services Lesotho requirements."
+      "Lehae Funeral Home currently operates existing operational systems across its business. These systems will be retained for day-to-day operations, but Alliance Group does not intend to integrate them with the compliance platform.",
+      "Infinity Business Dynamics therefore proposes Motheo POS with Zoho Elite as the frontline billing and compliance solution for Lehae. Zoho Elite is multi-locational and a strategic fit for Lehae's nine branches, while Motheo POS enables compliant fiscalisation at the point of sale.",
+      "Invoices captured through Zoho Elite / Motheo POS are processed via the Enterprise Compliance Hub for validation, fiscalisation, QR code generation and submission to Revenue Services Lesotho — delivering Group-wide compliance without integrating legacy operational systems."
     ],
   },
   20: {

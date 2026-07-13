@@ -29,7 +29,7 @@ export const executiveLetter = {
     "Our assessment covered the technology environments supporting Properties, Lehae Funeral Home, Finclude Lesotho and AGIHC, together with the integration pathways required to achieve compliant electronic billing across each entity without disrupting established business operations.",
     "Rather than implementing multiple independent compliance solutions, Infinity Business Dynamics recommends the deployment of a unified Enterprise Compliance Hub powered by the accredited Motheo Compliance Engine.",
     "As an accredited Revenue Services Lesotho Electronic Billing Solution provider, we are committed to delivering a platform that meets current regulatory requirements while providing the enterprise integration capability your Group requires.",
-    "This approach provides a single compliance platform capable of supporting all Alliance Group entities while integrating seamlessly with existing systems including MDA/MRI Property Management, Xero Accounting, existing operational platforms and a proposed standalone billing portal for AGIHC.",
+    "This approach provides a single compliance platform capable of supporting all Alliance Group entities — integrating MDA/MRI Property Management and Xero Accounting, deploying Zoho Elite with Motheo POS for Lehae Funeral Home's multi-branch operations, and providing a standalone billing portal for AGIHC.",
     "The proposal further details customer TIN validation, invoice lifecycle management, credit and debit note processing, QR code generation, executive dashboards, user administration and comprehensive audit trails — all delivered through one central compliance platform.",
     "The recommended architecture significantly reduces operational complexity, lowers the total cost of ownership and establishes a scalable platform capable of supporting future business growth across the Group.",
     "We have structured our delivery approach to allow progressive onboarding of each participating entity, supported by defined project governance, testing, training and post go-live managed services to ensure a controlled and successful transition.",
@@ -72,7 +72,7 @@ export const tableOfContentsSections = [
       { title: "Enterprise Compliance Hub Overview", page: 16 },
       { title: "Multi-Entity Solution Architecture", page: 17 },
       { title: "Properties (MDA/MRI) Integration", page: 18 },
-      { title: "Lehae Funeral Home Integration", page: 19 },
+      { title: "Lehae Funeral Home — Zoho Elite / Motheo POS", page: 19 },
       { title: "Finclude Lesotho (Xero) Integration", page: 20 },
       { title: "AGIHC Standalone Billing Portal", page: 21 },
       { title: "Customer TIN Validation", page: 22 },
@@ -144,24 +144,24 @@ export const understandingAllianceIntro = [
 ] as const;
 
 export const technologyLandscapeIntro = [
-  "Following our review of Alliance Group's operating environment, we identified four distinct technology environments requiring integration with the Revenue Services Lesotho Electronic Billing platform.",
-  "Each environment presents unique integration requirements while sharing common compliance objectives.",
+  "Following our review of Alliance Group's operating environment, we identified four distinct technology environments requiring a compliant Revenue Services Lesotho Electronic Billing pathway.",
+  "Each environment presents unique requirements while sharing common compliance objectives — including Lehae Funeral Home, where existing systems will be retained but not integrated.",
 ] as const;
 
 export const technologyLandscapeClosing = [
-  "This assessment confirms that a shared compliance architecture is both practical and necessary. Rather than replacing existing systems, Infinity Business Dynamics will extend each platform with accredited fiscalisation, QR code generation, TIN validation and centralised compliance monitoring.",
+  "This assessment confirms that a shared compliance architecture is both practical and necessary. Properties and Finclude retain and extend their current platforms; Lehae deploys Zoho Elite with Motheo POS across nine branches without integrating legacy systems; and AGIHC adopts a standalone billing portal — all connected to one accredited fiscalisation pathway.",
 ] as const;
 
 export const hubPlatformIntro = [
   "The Enterprise Compliance Hub acts as the central integration and compliance platform for all participating Alliance Group entities.",
-  "Each business continues to operate its existing software while the Hub manages transaction validation, fiscalisation, QR code generation, submission to Revenue Services Lesotho and centralised compliance monitoring.",
-  "This architecture ensures that compliance is standardised across the Group without disrupting existing operational systems.",
+  "Each business follows the pathway best suited to its operations — extending MDA/MRI and Xero where integration is preferred, deploying Zoho Elite with Motheo POS for Lehae's multi-branch frontline, and providing a standalone portal for AGIHC — while the Hub manages validation, fiscalisation, QR code generation, RSL submission and centralised monitoring.",
+  "This architecture standardises compliance across the Group without forcing a single operational system on every entity.",
 ] as const;
 
 export const hubOverviewIntro = [
   "Infinity Business Dynamics recommends implementing a single Enterprise Compliance Hub that serves as the central compliance platform for all Alliance Group entities.",
   "The platform enables each business to continue operating its preferred business application while automating compliance with Revenue Services Lesotho's Electronic Billing System (EBS) and Lekuka IDMS.",
-  "Rather than replacing existing software, the Compliance Hub extends current systems with enterprise-grade compliance capabilities through secure APIs and a central compliance engine.",
+  "Rather than forcing a single operational system across the Group, the Compliance Hub connects each entity through the pathway that fits — API integration, native connectors, Zoho Elite with Motheo POS, or a standalone billing portal — while sharing one accredited fiscalisation engine.",
   "This approach significantly reduces implementation costs, simplifies support and establishes a scalable compliance architecture capable of supporting future subsidiaries.",
 ] as const;
 
@@ -252,7 +252,7 @@ export const keyBusinessBenefits = [
 
 export const participatingEntities = [
   { name: "Properties", sector: "Property Management", system: "MDA/MRI" },
-  { name: "Lehae Funeral Home", sector: "Funeral Services", system: "Operational Management System" },
+  { name: "Lehae Funeral Home", sector: "Funeral Services", system: "Zoho Elite + Motheo POS (existing systems retained, not integrated)" },
   { name: "Finclude Lesotho", sector: "Financial Services", system: "Xero Accounting" },
   { name: "AGIHC", sector: "Holding Company", system: "No Billing System — Standalone Billing Portal" },
 ] as const;
@@ -261,7 +261,7 @@ export const allianceHubNodes = participatingEntities.map((e) => e.name);
 
 export const technologyLandscape = [
   { entity: "Properties", software: "MDA/MRI", integration: "API Integration" },
-  { entity: "Lehae Funeral Home", software: "Existing Operational System", integration: "API Integration" },
+  { entity: "Lehae Funeral Home", software: "Existing systems (not integrated)", integration: "Motheo POS / Zoho Elite" },
   { entity: "Finclude Lesotho", software: "Xero", integration: "Native Integration" },
   { entity: "AGIHC", software: "None", integration: "Standalone Billing Portal" },
 ] as const;
@@ -341,14 +341,14 @@ export const hubProvides = [
 /** Page 10 tree entities under Alliance Group */
 export const hubArchitectureEntities = [
   "Properties (MDA/MRI)",
-  "Lehae Funeral Home",
+  "Lehae (Zoho Elite / Motheo POS)",
   "Finclude (Xero)",
   "AGIHC Billing Portal",
 ] as const;
 
 export const hubArchitectureFlow = [
   "Properties (MDA/MRI)",
-  "Lehae Funeral Home",
+  "Lehae (Zoho Elite / Motheo POS)",
   "Finclude (Xero)",
   "AGIHC Billing Portal",
   "Enterprise Compliance Hub",
@@ -444,7 +444,7 @@ export const relevantExperience = [
   { title: "Multi-Entity Compliance", description: "Group-wide electronic billing implementations across diverse business systems." },
   { title: "Property Management Integration", description: "API integration with property management and rental billing platforms." },
   { title: "Cloud Accounting Integration", description: "Native Xero and cloud accounting platform connectivity." },
-  { title: "Operational System Integration", description: "Middleware and API integration with bespoke operational platforms." },
+  { title: "Multi-Branch POS & Zoho", description: "Zoho Elite with Motheo POS for multi-location frontline billing and compliance." },
   { title: "Standalone Billing Portals", description: "Purpose-built web billing applications with full fiscal compliance." },
   { title: "Managed Services", description: "Long-term platform monitoring, support and regulatory update management." },
 ] as const;
@@ -458,7 +458,7 @@ export const teamCapabilityHighlights = [
 
 export const hubOverviewPlatformFlow = [
   "Properties (MDA/MRI)",
-  "Lehae Funeral",
+  "Lehae (Zoho / Motheo POS)",
   "Finclude (Xero)",
   "AGIHC Portal",
   "Enterprise Compliance Hub",
@@ -467,8 +467,8 @@ export const hubOverviewPlatformFlow = [
 
 export const architecturalPrinciples = [
   { title: "Single Compliance Platform", description: "One central compliance engine supporting all participating entities." },
-  { title: "Independent Business Operations", description: "Each entity continues using its preferred operational software." },
-  { title: "Secure API Integration", description: "Standardised communication between applications and the Compliance Hub." },
+  { title: "Independent Business Operations", description: "Each entity follows the operational pathway best suited to its business — including Zoho Elite with Motheo POS for Lehae's nine branches." },
+  { title: "Secure API Integration", description: "Standardised communication between integrated applications and the Compliance Hub." },
   { title: "Shared Monitoring", description: "Centralised dashboards and compliance reporting." },
   { title: "Future Expansion", description: "Additional companies can be connected without redesigning the platform." },
 ] as const;
@@ -528,13 +528,26 @@ export const propertiesIntegration = {
 
 export const lehaeIntegration = {
   intro: [
-    "Lehae Funeral Home currently operates an existing operational platform supporting its business activities.",
-    "The proposed solution integrates this system with the Enterprise Compliance Hub through secure APIs or middleware services, enabling compliant invoice generation without requiring replacement of the current application.",
-    "This approach protects previous technology investments while ensuring compliance with Revenue Services Lesotho requirements.",
+    "Lehae Funeral Home currently operates existing operational systems across its business. These systems will be retained for day-to-day operations, but Alliance Group does not intend to integrate them with the compliance platform.",
+    "Infinity Business Dynamics therefore proposes Motheo POS with Zoho Elite as the frontline billing and compliance solution for Lehae. Zoho Elite is multi-locational and a strategic fit for Lehae's nine branches, while Motheo POS enables compliant fiscalisation at the point of sale.",
+    "Invoices captured through Zoho Elite / Motheo POS are processed via the Enterprise Compliance Hub for validation, fiscalisation, QR code generation and submission to Revenue Services Lesotho — delivering Group-wide compliance without integrating legacy operational systems.",
   ],
-  features: ["Customer TIN validation", "Invoice submission", "Credit notes", "Debit notes", "QR code generation", "Reporting"],
-  workflow: ["Operational System", "API Gateway", "Enterprise Compliance Hub", "Revenue Services Lesotho"],
-  benefits: ["Protect existing investment", "Automated compliance", "Simplified operations", "Reduced implementation risk"],
+  features: [
+    "Multi-branch Zoho Elite deployment (9 locations)",
+    "Motheo POS at the frontline",
+    "Customer TIN validation",
+    "Invoice, credit and debit note processing",
+    "QR code generation",
+    "Centralised compliance reporting",
+  ],
+  workflow: ["Motheo POS / Zoho Elite", "Enterprise Compliance Hub", "Motheo", "Revenue Services Lesotho"],
+  benefits: [
+    "Multi-location ready for 9 branches",
+    "No legacy system integration required",
+    "Frontline Motheo POS compliance",
+    "Strategic Zoho Elite platform fit",
+    "Unified Group compliance reporting",
+  ],
 } as const;
 
 export const fincludeIntegration = {
@@ -1229,7 +1242,7 @@ export const annualManagedServices = [
   },
   {
     service: "Zoho Elite — Lehae Funeral Home",
-    description: "Multi-branch invoicing and accounting with compliance layer for 9 branches, including POS modules as required",
+    description: "Multi-branch Zoho Elite with Motheo POS for 9 locations — frontline fiscalisation without integrating legacy operational systems",
     type: "Annual",
     amount: "120,000.00",
   },
@@ -1388,7 +1401,7 @@ export const supplierResponses = [
   { requirement: "Audit Trails", response: "Included" },
   { requirement: "MDA/MRI Integration", response: "Supported" },
   { requirement: "Xero Integration", response: "Supported" },
-  { requirement: "Lehae Operational System Integration", response: "Supported" },
+  { requirement: "Lehae Motheo POS / Zoho Elite Deployment", response: "Included" },
   { requirement: "Standalone Billing Portal for AGIHC", response: "Included" },
   { requirement: "Training", response: "Included" },
   { requirement: "Post-Implementation Support", response: "Included" },
@@ -1501,7 +1514,7 @@ export const appendices = [
   },
   {
     id: "Appendix D",
-    title: "Entity Integration Architecture (MDA/MRI, Xero, Lehae, AGIHC)",
+    title: "Entity Integration Architecture (MDA/MRI, Xero, Zoho Elite/Motheo POS, AGIHC)",
     purpose: "Included in the main proposal integration slides.",
   },
   {

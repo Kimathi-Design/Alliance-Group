@@ -387,9 +387,9 @@ export function renderAllianceSlide(index: number): ReactElement {
         <DeckSlideFrame index={18}>
           <SlideEyebrow index={18} />
           <DeckSlideBodySplit layout="visual-bottom" visualLabel={slideVisualLabels[18]} visual={<VerticalFlowDiagram items={lehaeIntegration.workflow} icons={ALLIANCE_ENTITY_ICONS} compact centerContent />}>
-            <DeckTitle highlight="Operational Systems">Connecting Existing</DeckTitle>
+            <DeckTitle highlight="Zoho Elite & Motheo POS">Frontline Compliance with</DeckTitle>
             <DeckParagraphs paragraphs={lehaeIntegration.intro} />
-            <DeckSectionLabel>Integration Features</DeckSectionLabel>
+            <DeckSectionLabel>Solution Features</DeckSectionLabel>
             <DeckBulletList compact items={[...lehaeIntegration.features]} />
             <DeckSectionLabel>Business Benefits</DeckSectionLabel>
             <DeckBulletList compact items={[...lehaeIntegration.benefits]} />

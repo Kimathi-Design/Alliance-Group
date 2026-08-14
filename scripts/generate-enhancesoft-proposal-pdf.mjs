@@ -71,13 +71,12 @@ try {
 
     const target = slide.locator("section.deck-slide").first();
     const hasSlide = (await target.count()) > 0;
-    const jpgBytes = await (hasSlide ? target : slide).screenshot({
-      type: "jpeg",
-      quality: 95,
+    const pngBytes = await (hasSlide ? target : slide).screenshot({
+      type: "png",
       animations: "disabled",
     });
 
-    const image = await pdfDoc.embedJpg(jpgBytes);
+    const image = await pdfDoc.embedPng(pngBytes);
     const pdfPage = pdfDoc.addPage([SLIDE_WIDTH, SLIDE_HEIGHT]);
     pdfPage.drawImage(image, {
       x: 0,

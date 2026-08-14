@@ -19,7 +19,6 @@ import {
   SLIDE_WIDTH,
   slideTitles,
 } from "@/lib/enhancesoft-deck-content";
-import { proposalCover } from "@/lib/enhancesoft-proposal-content";
 import { ASSETS } from "@/lib/assets";
 import { downloadPdf } from "@/lib/export-deck-pdf";
 import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
@@ -171,23 +170,27 @@ export function EnhancesoftViewer() {
       >
         <div className="flex min-w-0 items-center gap-3">
           <span className="es-footer-brand min-w-0">
+            <a
+              href="https://www.evolve-link.com/"
+              className="es-footer-brand__link shrink-0"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Evolve-Link"
+            >
+              <img
+                src={ASSETS.brands.evolveLinkFavicon}
+                alt=""
+                className="es-footer-brand__mark"
+                aria-hidden
+              />
+            </a>
+            <span className="truncate">Brian Kimathi | Enhancesoft</span>
             <img
-              src={ASSETS.brands.evolveLinkFavicon}
+              src={ASSETS.brands.enhancesoftLogo}
               alt=""
               className="es-footer-brand__mark"
               aria-hidden
             />
-            <span className="truncate">
-              {proposalCover.preparedBy} |{" "}
-              <a
-                href="https://www.evolve-link.com/"
-                className="es-footer-brand__link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                EVOLVE-LINK
-              </a>
-            </span>
           </span>
           <span className="truncate text-[13px] text-[color:var(--gms-text-muted)]">
             {slideTitles[current]}

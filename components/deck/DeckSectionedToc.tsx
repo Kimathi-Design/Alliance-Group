@@ -9,11 +9,16 @@ type TocRow =
   | { type: "section"; label: string; key: string }
   | { type: "entry"; key: string; index: number; title: string; page: number };
 
-function buildTocRows(): TocRow[] {
+function buildTocRows(
+  sections: readonly {
+    section: string;
+    entries: readonly { title: string; page: number }[];
+  }[],
+): TocRow[] {
   const rows: TocRow[] = [];
   let itemIndex = 0;
 
-  for (const section of tableOfContentsSections) {
+  for (const section of sections) {
     rows.push({ type: "section", label: section.section, key: `section-${section.section}` });
     for (const entry of section.entries) {
       itemIndex += 1;
@@ -30,19 +35,26 @@ function buildTocRows(): TocRow[] {
   return rows;
 }
 
-const TOC_ROWS = buildTocRows();
+export function DeckSectionedTableOfContents({
+  sections = tableOfContentsSections,
+}: {
+  sections?: readonly {
+    section: string;
+    entries: readonly { title: string; page: number }[];
+  }[];
+}) {
+  const rows = buildTocRows(sections);
 
-export function DeckSectionedTableOfContents() {
   return (
     <div className="deck-toc flex min-h-0 flex-1 flex-col pt-2">
       <div
         className="deck-toc__grid grid min-h-0 flex-1"
         style={{
           gridTemplateColumns: "2.25rem auto 1fr 3rem",
-          gridTemplateRows: `repeat(${TOC_ROWS.length}, minmax(1.3em, 1fr))`,
+          gridTemplateRows: `repeat(${rows.length}, minmax(1.3em, 1fr))`,
         }}
       >
-        {TOC_ROWS.map((row, rowIndex) => {
+        {rows.map((row, rowIndex) => {
           const gridRow = rowIndex + 1;
 
           if (row.type === "section") {

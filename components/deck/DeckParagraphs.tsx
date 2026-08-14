@@ -1,4 +1,4 @@
-import { DeckBody } from "@/components/deck/DeckSlideFrame";
+import { DeckLinkedText } from "@/components/deck/DeckLinkedText";
 
 export function DeckParagraphs({
   paragraphs,
@@ -9,7 +9,7 @@ export function DeckParagraphs({
     <>
       {paragraphs.map((paragraph) => (
         <p key={paragraph} className="deck-type-body">
-          {paragraph}
+          <DeckLinkedText>{paragraph}</DeckLinkedText>
         </p>
       ))}
     </>

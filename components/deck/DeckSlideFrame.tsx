@@ -6,8 +6,9 @@ import { animate, useReducedMotion } from "framer-motion";
 import { GlowOrbs } from "@/components/effects/GlowOrbs";
 import { Particles } from "@/components/effects/Particles";
 import { DeckIconTile as DeckLucideIconTile, deckIcon } from "@/components/deck/deck-icons";
+import { DeckLinkedText } from "@/components/deck/DeckLinkedText";
 import type { LucideIcon } from "lucide-react";
-import { slideTitles } from "@/lib/deck-content";
+import { slideTitles as allianceSlideTitles } from "@/lib/deck-content";
 import { DeckNumberingProvider, useDeckNumbering } from "@/components/deck/DeckNumbering";
 import { DeckEyebrow, SlideEyebrow, SlideSectionCorner, DeckHeaderBrand } from "@/components/deck/SlideEyebrow";
 import { DeckFooterBrand, MotheoMark } from "@/components/deck/IbdMark";
@@ -34,7 +35,34 @@ type Props = {
   backgroundImage?: string;
   /** Hide the default slide footer (e.g. cover / back cover) */
   hideFooter?: boolean;
+  /** Override Alliance SLIDE_COUNT in page pill */
+  slideCount?: number;
+  /** Override header brand pill */
+  headerBrand?: ReactNode;
+  /** Override footer left brand */
+  footerBrand?: ReactNode;
+  /** Override bottom-right corner badge */
+  cornerBadge?: ReactNode;
+  /** Override Motheo mark in page pill */
+  pagePillMark?: ReactNode;
+  /** Dark cover / divider background (no light gradient or orbs) */
+  darkBackground?: boolean;
+  /** Override Alliance TOC section number (Enhancesoft uses 1-based slide index) */
+  tocSection?: number | null;
+  /** Override Alliance slide title so DeckTitle can suppress duplicates */
+  slideTitle?: string | null;
 };
+
+function isDeckIntroChild(child: ReactNode) {
+  if (!isValidElement(child)) return false;
+  const type = child.type as { deckIntro?: boolean };
+  return (
+    type === DeckEyebrow ||
+    type === SlideEyebrow ||
+    type === DeckTitle ||
+    type?.deckIntro === true
+  );
+}
 
 function partitionSlideChildren(children: ReactNode) {
   const items = Children.toArray(children);
@@ -43,13 +71,7 @@ function partitionSlideChildren(children: ReactNode) {
   let pastIntro = false;
 
   for (const child of items) {
-    if (
-      !pastIntro &&
-      isValidElement(child) &&
-      (child.type === DeckEyebrow ||
-        child.type === SlideEyebrow ||
-        child.type === DeckTitle)
-    ) {
+    if (!pastIntro && isDeckIntroChild(child)) {
       intro.push(child);
     } else {
       pastIntro = true;
@@ -170,6 +192,14 @@ export function DeckSlideFrame({
   layout = "default",
   backgroundImage,
   hideFooter = false,
+  slideCount = SLIDE_COUNT,
+  headerBrand,
+  footerBrand,
+  cornerBadge,
+  pagePillMark,
+  darkBackground = false,
+  tocSection,
+  slideTitle = null,
 }: Props) {
   const { intro, body } =
     layout === "full"
@@ -182,7 +212,11 @@ export function DeckSlideFrame({
       style={{ width: SLIDE_WIDTH, height: SLIDE_HEIGHT }}
       aria-label={`Slide ${index + 1}`}
     >
-      <DeckNumberingProvider slideIndex={index}>
+      <DeckNumberingProvider
+        slideIndex={index}
+        tocSection={tocSection}
+        slideTitle={slideTitle}
+      >
         {backgroundImage ? (
           <>
             <Image
@@ -206,13 +240,14 @@ export function DeckSlideFrame({
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
-              background:
-                "linear-gradient(165deg, #ffffff 0%, #f5f7fb 52%, #ffffff 100%)",
+              background: darkBackground
+                ? "linear-gradient(165deg, #0d0f1a 0%, #1a1f35 48%, #0d0f1a 100%)"
+                : "linear-gradient(165deg, #ffffff 0%, #f5f7fb 52%, #ffffff 100%)",
             }}
           />
         )}
-        {!backgroundImage && <GlowOrbs />}
-        {showParticles && !backgroundImage && (
+        {!backgroundImage && !darkBackground && <GlowOrbs />}
+        {showParticles && !backgroundImage && !darkBackground && (
           <Particles density={0.00002} className="absolute inset-0 opacity-25" />
         )}
 
@@ -230,10 +265,10 @@ export function DeckSlideFrame({
               className="deck-slide-header flex shrink-0 items-center justify-between gap-4"
               style={{ marginBottom: SLIDE_HEADER_BODY_GAP }}
             >
-              <DeckHeaderBrand />
+              {headerBrand ?? <DeckHeaderBrand />}
               <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[color:var(--gms-border)] bg-[color:var(--gms-glass)] px-4 py-1.5 text-[12px] tracking-wider text-[color:var(--gms-text-muted)] tabular-nums">
-                <MotheoMark size="sm" />
-                {String(index + 1).padStart(2, "0")} / {SLIDE_COUNT}
+                {pagePillMark ?? <MotheoMark size="sm" />}
+                {String(index + 1).padStart(2, "0")} / {slideCount}
               </span>
             </header>
           )}
@@ -269,8 +304,11 @@ export function DeckSlideFrame({
               }`}
               style={{ marginTop: SLIDE_FOOTER_GAP }}
             >
-              {index !== 1 && <DeckFooterBrand index={index} slideCount={SLIDE_COUNT} />}
-              <SlideSectionCorner />
+              {index !== 1 &&
+                (footerBrand ?? (
+                  <DeckFooterBrand index={index} slideCount={slideCount} />
+                ))}
+              {cornerBadge ?? <SlideSectionCorner />}
             </footer>
           )}
         </div>
@@ -312,7 +350,9 @@ export function DeckTitle({
     .join(" ")
     .replace(/\s+/g, " ")
     .trim();
-  const slideTitle = numbering ? slideTitles[numbering.slideIndex] : null;
+  const slideTitle =
+    numbering?.slideTitle ??
+    (numbering ? allianceSlideTitles[numbering.slideIndex] : null);
   if (
     plainTitle &&
     slideTitle &&
@@ -344,6 +384,7 @@ export function DeckTitle({
     </h2>
   );
 }
+DeckTitle.deckIntro = true;
 
 export function DeckBody({ children }: { children: ReactNode }) {
   return <p className="deck-type-body">{children}</p>;
@@ -409,8 +450,8 @@ export function DeckStatCard({
   animateValue?: boolean;
 }) {
   return (
-    <div className="gms-card flex flex-col items-center overflow-visible rounded-3xl p-5 text-center">
-      <p className="overflow-visible pr-1 text-[32px] font-semibold leading-none tracking-tight whitespace-nowrap text-deck-accent">
+    <div className="gms-card flex flex-col items-center overflow-visible rounded-3xl px-5 py-6 text-center">
+      <p className="overflow-visible px-1 text-[32px] font-semibold leading-none tracking-tight text-deck-accent">
         {animateValue ? <AnimatedStatValue value={value} /> : value}
       </p>
       <p className="mt-2 text-[15px] font-medium leading-snug text-[color:var(--gms-text)]">
@@ -426,12 +467,16 @@ export function DeckStatCard({
 export function DeckInsight({
   label,
   children,
+  className = "",
 }: {
   label: string;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="rounded-3xl border border-[color:var(--gms-accent)]/20 bg-[color:var(--gms-accent)]/[0.06] p-6">
+    <div
+      className={`rounded-3xl border border-[color:var(--gms-accent)]/20 bg-[color:var(--gms-accent)]/[0.06] p-6 ${className}`.trim()}
+    >
       <p className="text-[12px] font-semibold tracking-[0.22em] text-deck-accent uppercase">
         {label}
       </p>
@@ -498,9 +543,11 @@ export function DeckBulletList({
             <div className="min-w-0">
               {inline && description ? (
                 <p className="deck-type-body">
-                  <span className="font-semibold">{title}</span>
+                  <span className="font-semibold">
+                    <DeckLinkedText>{title}</DeckLinkedText>
+                  </span>
                   {" — "}
-                  {description}
+                  <DeckLinkedText>{description}</DeckLinkedText>
                 </p>
               ) : (
                 <>
@@ -511,11 +558,11 @@ export function DeckBulletList({
                         : "deck-type-body"
                     }
                   >
-                    {title}
+                    <DeckLinkedText>{title}</DeckLinkedText>
                   </p>
                   {description && (
                     <p className="deck-type-body mt-1">
-                      {description}
+                      <DeckLinkedText>{description}</DeckLinkedText>
                     </p>
                   )}
                 </>
@@ -719,10 +766,12 @@ export function DeckTable({
                           {rowIcon && (
                             <DeckLucideIconTile icon={rowIcon} size="compact" />
                           )}
-                          <span className="deck-table__role-label min-w-0">{cell}</span>
+                          <span className="deck-table__role-label min-w-0">
+                            <DeckLinkedText>{cell}</DeckLinkedText>
+                          </span>
                         </div>
                       ) : (
-                        cell
+                        <DeckLinkedText>{cell}</DeckLinkedText>
                       )}
                     </td>
                   );

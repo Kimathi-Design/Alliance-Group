@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
-import { ArrowDown, ArrowRight, BadgeCheck, CheckCircle2, QrCode, Rocket } from "lucide-react";
+import { ArrowDown, ArrowRight, BadgeCheck, CheckCircle2, QrCode, Rocket, Sparkles } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 import { MotheoMark } from "@/components/deck/IbdMark";
 import { ASSETS } from "@/lib/assets";
@@ -69,12 +69,14 @@ export function VerticalFlowDiagram({
   icons,
   className,
   centerContent = false,
+  iconPosition = "right",
 }: {
   items: readonly (string | { title: string; description?: string })[];
   compact?: boolean;
   icons?: readonly LucideIcon[];
   className?: string;
   centerContent?: boolean;
+  iconPosition?: "left" | "right";
 }) {
   const hasDescriptions = items.some(
     (item) => typeof item !== "string" && Boolean(item.description),
@@ -112,7 +114,15 @@ export function VerticalFlowDiagram({
                     centerContent || !description ? "items-center" : "items-start"
                   }`}
                 >
-                  {compact && (
+                  {iconPosition === "left" && Icon ? (
+                    <div
+                      className={`deck-flow-step-card__number-col${
+                        compact ? " deck-flow-step-card__number-col--compact" : ""
+                      }`}
+                    >
+                      <FlowStepTile compact={compact}>{deckIcon(Icon, "sm")}</FlowStepTile>
+                    </div>
+                  ) : compact ? (
                     <div
                       className={`deck-flow-step-card__number-col${
                         compact ? " deck-flow-step-card__number-col--compact" : ""
@@ -124,7 +134,7 @@ export function VerticalFlowDiagram({
                         </span>
                       </FlowStepTile>
                     </div>
-                  )}
+                  ) : null}
                   <div
                     className={`min-w-0 flex-1${
                       centerContent ? " deck-flow-step-card__content--centered" : ""
@@ -149,7 +159,7 @@ export function VerticalFlowDiagram({
                       </p>
                     )}
                   </div>
-                  {Icon && (
+                  {Icon && iconPosition === "right" && (
                     <div
                       className={`deck-flow-step-card__icon-col${
                         compact ? " deck-flow-step-card__icon-col--compact" : ""
@@ -415,6 +425,7 @@ export function SplitCompareDiagram({
   rightItems,
   leftIcons,
   rightIcons,
+  rightLayout = "stacked",
 }: {
   leftTitle: string;
   rightTitle: string;
@@ -422,6 +433,7 @@ export function SplitCompareDiagram({
   rightItems: readonly (string | readonly string[])[];
   leftIcons?: readonly LucideIcon[];
   rightIcons?: readonly LucideIcon[];
+  rightLayout?: "row" | "stacked";
 }) {
   return (
     <div className="deck-split-compare grid h-full min-h-0 flex-1 grid-cols-2 gap-4">
@@ -448,7 +460,7 @@ export function SplitCompareDiagram({
               index={index}
               icon={rightIcons?.[index] ?? rightIcons?.[rightIcons.length - 1]}
               numberTone="green"
-              layout="stacked"
+              layout={rightLayout}
             />
           ))}
         </div>
@@ -661,16 +673,30 @@ function getHubNodePosition(
   };
 }
 
+function hubNodeTitle(node: string | { title: string; description?: string }) {
+  return typeof node === "string" ? node : node.title;
+}
+
+function hubNodeDescription(node: string | { title: string; description?: string }) {
+  return typeof node === "string" ? undefined : node.description;
+}
+
 export function HubSpokeDiagram({
   center,
   nodes,
   gateway = "Infinity Compliance Gateway",
   icons,
+  centerMark,
+  showPartnerMarks = true,
 }: {
   center: string;
-  nodes: readonly string[];
+  nodes: readonly (string | { title: string; description?: string })[];
   gateway?: string;
   icons?: readonly LucideIcon[];
+  /** Replaces the Alliance logo in the hub (Enhancesoft / other decks) */
+  centerMark?: ReactNode;
+  /** Alliance + IBD + Motheo marks on the gateway bar. Off for client-specific decks. */
+  showPartnerMarks?: boolean;
 }) {
   const hubX = 50;
   const hubY = 46;
@@ -697,7 +723,7 @@ export function HubSpokeDiagram({
               );
 
               return (
-                <g key={`${node}-line`}>
+                <g key={`${hubNodeTitle(node)}-line`}>
                   <line
                     x1={hubX}
                     y1={hubY}
@@ -726,14 +752,18 @@ export function HubSpokeDiagram({
             className="hub-spoke-visual__center gms-card absolute z-30 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full text-center"
             style={{ left: `${hubX}%`, top: `${hubY}%` }}
           >
-            <Image
-              src={ASSETS.brands.allianceLogo}
-              alt=""
-              width={1200}
-              height={400}
-              aria-hidden
-              className="hub-spoke-visual__center-logo relative z-10 shrink-0 object-contain"
-            />
+            {centerMark ? (
+              <div className="hub-spoke-visual__center-mark relative z-10">{centerMark}</div>
+            ) : (
+              <Image
+                src={ASSETS.brands.allianceLogo}
+                alt=""
+                width={1200}
+                height={400}
+                aria-hidden
+                className="hub-spoke-visual__center-logo relative z-10 shrink-0 object-contain"
+              />
+            )}
             <p className="hub-spoke-visual__center-label relative z-10">{center}</p>
           </div>
 
@@ -747,10 +777,12 @@ export function HubSpokeDiagram({
               26,
             );
             const Icon = icons?.[index] ?? icons?.[icons.length - 1];
+            const title = hubNodeTitle(node);
+            const description = hubNodeDescription(node);
 
             return (
               <div
-                key={node}
+                key={title}
                 className="hub-spoke-visual__node absolute z-10 -translate-x-1/2 -translate-y-1/2"
                 style={{ left: `${nodeX}%`, top: `${nodeY}%` }}
               >
@@ -765,7 +797,10 @@ export function HubSpokeDiagram({
                       <FlowStepTile compact>{deckIcon(Icon, "sm")}</FlowStepTile>
                     )}
                   </div>
-                  <p className="hub-spoke-visual__label">{node}</p>
+                  <p className="hub-spoke-visual__label">{title}</p>
+                  {description ? (
+                    <p className="hub-spoke-visual__hint">{description}</p>
+                  ) : null}
                 </div>
               </div>
             );
@@ -774,23 +809,29 @@ export function HubSpokeDiagram({
       </div>
 
       <div className="hub-spoke-visual__gateway gms-card flex shrink-0 items-center justify-center gap-3 rounded-2xl">
-        <Image
-          src={ASSETS.brands.ibdFavicon}
-          alt=""
-          width={16}
-          height={16}
-          aria-hidden
-          className="h-5 w-5 shrink-0 object-contain"
-        />
+        {showPartnerMarks ? (
+          <Image
+            src={ASSETS.brands.ibdFavicon}
+            alt=""
+            width={16}
+            height={16}
+            aria-hidden
+            className="h-5 w-5 shrink-0 object-contain"
+          />
+        ) : (
+          <Sparkles className="h-5 w-5 shrink-0 text-deck-accent" aria-hidden />
+        )}
         <p className="hub-spoke-visual__gateway-label">{gateway}</p>
-        <Image
-          src={ASSETS.brands.motheoLogo}
-          alt=""
-          width={3770}
-          height={3290}
-          aria-hidden
-          className="h-4 w-auto shrink-0 object-contain"
-        />
+        {showPartnerMarks ? (
+          <Image
+            src={ASSETS.brands.motheoLogo}
+            alt=""
+            width={3770}
+            height={3290}
+            aria-hidden
+            className="h-4 w-auto shrink-0 object-contain"
+          />
+        ) : null}
       </div>
     </div>
   );
@@ -1353,12 +1394,12 @@ const GANTT_TOTAL_WEEKS = 10;
 
 const GANTT_BAR_COLORS = [
   "var(--gms-accent)",
-  "#5c3d9e",
+  "var(--deck-gantt-mid, #5c3d9e)",
   "var(--ibd-green)",
-  "#7a5c14",
-  "#34216b",
-  "#4cbb17",
-  "#5c3d9e",
+  "var(--deck-gantt-warm, #7a5c14)",
+  "var(--ibd-blue)",
+  "var(--ibd-green)",
+  "var(--deck-gantt-mid, #5c3d9e)",
   "var(--ibd-green)",
   "var(--gms-accent)",
 ] as const;
@@ -1373,14 +1414,42 @@ function parseWeekRange(duration: string): { start: number; end: number } {
   return { start, end };
 }
 
-export function GanttChart({ phases }: { phases: readonly (readonly [string, string])[] }) {
+export function GanttChart({
+  phases,
+  weeks = GANTT_TOTAL_WEEKS,
+  title = "10-Week Implementation Schedule",
+  rowLabel = "Phase",
+  labelWidth = "minmax(7.5rem, 9.5rem)",
+  iconSize = "xs",
+  showAllDurations = false,
+  labelsOutside = false,
+}: {
+  phases: readonly (readonly [string, string])[];
+  weeks?: number;
+  /** Pass null when the parent panel already has a heading */
+  title?: string | null;
+  rowLabel?: string;
+  labelWidth?: string;
+  iconSize?: "xs" | "sm";
+  showAllDurations?: boolean;
+  /** Move icons and week copy out of the bars so they never clip */
+  labelsOutside?: boolean;
+}) {
+  const columns = {
+    gridTemplateColumns: `${labelWidth} repeat(${weeks}, minmax(0, 1fr))`,
+  };
+
   return (
-    <div className="gantt-chart-visual flex h-full min-h-0 w-full flex-col">
-      <DeckVisualPanelLabel>10-Week Implementation Schedule</DeckVisualPanelLabel>
+    <div
+      className={`gantt-chart-visual flex h-full min-h-0 w-full flex-col${
+        labelsOutside ? " gantt-chart-visual--labels-outside" : ""
+      }`}
+    >
+      {title ? <DeckVisualPanelLabel>{title}</DeckVisualPanelLabel> : null}
       <div className="gantt-chart-visual__panel gms-card flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl">
-        <div className="gantt-chart-visual__header">
-          <div className="gantt-chart-visual__header-label">Phase</div>
-          {Array.from({ length: GANTT_TOTAL_WEEKS }, (_, index) => (
+        <div className="gantt-chart-visual__header" style={columns}>
+          <div className="gantt-chart-visual__header-label">{rowLabel}</div>
+          {Array.from({ length: weeks }, (_, index) => (
             <div key={`week-${index + 1}`} className="gantt-chart-visual__week-header">
               W{index + 1}
             </div>
@@ -1391,14 +1460,37 @@ export function GanttChart({ phases }: { phases: readonly (readonly [string, str
             const { start, end } = parseWeekRange(duration);
             const span = end - start + 1;
             const Icon = GANTT_PHASE_ICONS[index] ?? GANTT_PHASE_ICONS[GANTT_PHASE_ICONS.length - 1]!;
+            const barColor = GANTT_BAR_COLORS[index % GANTT_BAR_COLORS.length];
 
             return (
-              <div key={phase} className="gantt-chart-visual__row">
-                <div className="gantt-chart-visual__label">
-                  <p className="gantt-chart-visual__phase-name">{phase}</p>
+              <div key={phase} className="gantt-chart-visual__row" style={columns}>
+                <div
+                  className={`gantt-chart-visual__label${
+                    labelsOutside ? " gantt-chart-visual__label--meta" : ""
+                  }`}
+                >
+                  {labelsOutside ? (
+                    <>
+                      <span
+                        className="gantt-chart-visual__row-icon"
+                        style={{ backgroundColor: barColor }}
+                      >
+                        {deckIcon(Icon, iconSize)}
+                      </span>
+                      <div className="gantt-chart-visual__label-copy">
+                        <p className="gantt-chart-visual__phase-name">{phase}</p>
+                        <p className="gantt-chart-visual__phase-duration">{duration}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="gantt-chart-visual__phase-name">{phase}</p>
+                  )}
                 </div>
-                <div className="gantt-chart-visual__track">
-                  {Array.from({ length: GANTT_TOTAL_WEEKS }, (_, weekIndex) => (
+                <div
+                  className="gantt-chart-visual__track"
+                  style={{ gridTemplateColumns: `repeat(${weeks}, minmax(0, 1fr))` }}
+                >
+                  {Array.from({ length: weeks }, (_, weekIndex) => (
                     <div
                       key={`${phase}-week-${weekIndex + 1}`}
                       className="gantt-chart-visual__week-cell"
@@ -1406,18 +1498,24 @@ export function GanttChart({ phases }: { phases: readonly (readonly [string, str
                     />
                   ))}
                   <div
-                    className="gantt-chart-visual__bar"
+                    className={`gantt-chart-visual__bar${
+                      labelsOutside ? " gantt-chart-visual__bar--plain" : ""
+                    }`}
                     style={{
                       gridColumn: `${start} / ${end + 1}`,
-                      backgroundColor: GANTT_BAR_COLORS[index % GANTT_BAR_COLORS.length],
+                      backgroundColor: barColor,
                     }}
                     title={`${phase} — ${duration}`}
                   >
-                    <span className="gantt-chart-visual__bar-icon">
-                      {deckIcon(Icon, "xs")}
-                    </span>
-                    {span > 1 && (
-                      <span className="gantt-chart-visual__duration">{duration}</span>
+                    {labelsOutside ? null : (
+                      <>
+                        <span className="gantt-chart-visual__bar-icon">
+                          {deckIcon(Icon, iconSize)}
+                        </span>
+                        {(showAllDurations || span > 1) && (
+                          <span className="gantt-chart-visual__duration">{duration}</span>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -1915,7 +2013,7 @@ export function ValueCardsVisual({
   items,
   icons,
 }: {
-  items: readonly { title: string; description: string }[];
+  items: readonly { title: string; description: string; logo?: string }[];
   icons?: readonly LucideIcon[];
 }) {
   return (
@@ -1928,7 +2026,15 @@ export function ValueCardsVisual({
                 {deckIcon(icons[index], "sm")}
               </div>
             )}
-            <p className="deck-type-card-title value-cards-visual__title">{item.title}</p>
+            {item.logo ? (
+              <img
+                src={item.logo}
+                alt={item.title}
+                className="value-cards-visual__logo"
+              />
+            ) : (
+              <p className="deck-type-card-title value-cards-visual__title">{item.title}</p>
+            )}
             <p className="deck-type-card-body value-cards-visual__body">{item.description}</p>
           </div>
         ))}

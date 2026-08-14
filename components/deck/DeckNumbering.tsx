@@ -12,6 +12,7 @@ import { getTocSectionNumber } from "@/lib/deck-content";
 type DeckNumberingContextValue = {
   slideIndex: number;
   tocSection: number | null;
+  slideTitle: string | null;
   allocateSectionNumber: () => number;
 };
 
@@ -21,12 +22,17 @@ const DeckNumberingContext = createContext<DeckNumberingContextValue | null>(
 
 export function DeckNumberingProvider({
   slideIndex,
+  tocSection: tocSectionProp,
+  slideTitle = null,
   children,
 }: {
   slideIndex: number;
+  tocSection?: number | null;
+  slideTitle?: string | null;
   children: ReactNode;
 }) {
-  const tocSection = getTocSectionNumber(slideIndex);
+  const tocSection =
+    tocSectionProp !== undefined ? tocSectionProp : getTocSectionNumber(slideIndex);
   const sectionCounter = useRef(1);
   const allocateSectionNumber = useCallback(() => {
     sectionCounter.current += 1;
@@ -35,7 +41,7 @@ export function DeckNumberingProvider({
 
   return (
     <DeckNumberingContext.Provider
-      value={{ slideIndex, tocSection, allocateSectionNumber }}
+      value={{ slideIndex, tocSection, slideTitle, allocateSectionNumber }}
     >
       {children}
     </DeckNumberingContext.Provider>

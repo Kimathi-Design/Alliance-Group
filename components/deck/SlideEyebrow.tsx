@@ -62,6 +62,10 @@ const SLIDE_ICONS: LucideIcon[] = [
   Mail, Target, Layers, Award,
 ];
 
+export function getSlideIcon(index: number): LucideIcon {
+  return SLIDE_ICONS[index] ?? Sparkles;
+}
+
 type SectionBadgeProps = {
   index: number;
   className?: string;
@@ -75,15 +79,16 @@ export function DeckEyebrow({
   icon: ReactNode;
 }) {
   return (
-    <div className="deck-title-pill gms-eyebrow inline-flex items-center rounded-full uppercase">
+    <div className="deck-title-pill gms-eyebrow inline-flex w-max max-w-full shrink-0 items-center self-start rounded-full uppercase">
       <span className="deck-title-pill__icon">{icon}</span>
       <span className="deck-title-pill__label font-semibold">{children}</span>
     </div>
   );
 }
+DeckEyebrow.deckIntro = true;
 
 export function SectionBadge({ index, className = "" }: SectionBadgeProps) {
-  const Icon = SLIDE_ICONS[index] ?? Sparkles;
+  const Icon = getSlideIcon(index);
   const label = slideTitles[index] ?? "Proposal";
 
   return (
@@ -102,18 +107,23 @@ export function SectionBadge({ index, className = "" }: SectionBadgeProps) {
 export function SlideEyebrow({
   index,
   sectionNumber,
+  label: labelOverride,
 }: {
   index: number;
   /** Override TOC numbering, e.g. "32.5" for appendix sub-sections */
   sectionNumber?: string;
+  /** Override Alliance slideTitles label (e.g. Enhancesoft deck) */
+  label?: string;
 }) {
-  const Icon = SLIDE_ICONS[index] ?? Sparkles;
-  const label = slideTitles[index] ?? "Proposal";
+  const Icon = getSlideIcon(index);
+  const label = labelOverride ?? slideTitles[index] ?? "Proposal";
   const tocSection =
     sectionNumber ??
-    (getTocSectionNumber(index) !== null
-      ? String(getTocSectionNumber(index)).padStart(2, "0")
-      : null);
+    (labelOverride
+      ? String(index + 1).padStart(2, "0")
+      : getTocSectionNumber(index) !== null
+        ? String(getTocSectionNumber(index)).padStart(2, "0")
+        : null);
   const prefix = tocSection ? `${tocSection} · ` : "";
 
   return (
@@ -123,6 +133,7 @@ export function SlideEyebrow({
     </DeckEyebrow>
   );
 }
+SlideEyebrow.deckIntro = true;
 
 /** Slide header brand — Alliance + IBD */
 export function DeckHeaderBrand() {

@@ -25,6 +25,17 @@ import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
 import { DeckProgressBar } from "@/components/deck/DeckProgressBar";
 
 const FIT_MARGIN = 20;
+const MIN_LOADING_MS = 3000;
+const LOAD_FADE_S = 0.8;
+
+function preloadImage(src: string) {
+  return new Promise<void>((resolve) => {
+    const img = new window.Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = src;
+  });
+}
 
 function computeDeckScale(navHeight: number, container?: HTMLElement | null) {
   const rect = container?.getBoundingClientRect();
@@ -38,6 +49,10 @@ function computeDeckScale(navHeight: number, container?: HTMLElement | null) {
 export function EnhancesoftViewer() {
   const [current, setCurrent] = useState(0);
   const [scale, setScale] = useState<number | null>(null);
+  const [holdLoading, setHoldLoading] = useState(true);
+  const [coverReady, setCoverReady] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+  const [deckReady, setDeckReady] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -69,6 +84,31 @@ export function EnhancesoftViewer() {
       setDownloading(false);
     }
   }, [downloading]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setHoldLoading(false), MIN_LOADING_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all([
+      preloadImage(ASSETS.enhancesoftCover),
+      preloadImage(ASSETS.brands.enhancesoftLogo),
+      preloadImage(ASSETS.brands.enhancesoftWordmark),
+    ]).then(() => {
+      if (!cancelled) setCoverReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const canReveal = !holdLoading && scale !== null && coverReady;
+
+  useEffect(() => {
+    if (canReveal) setShowLoader(false);
+  }, [canReveal]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -124,12 +164,12 @@ export function EnhancesoftViewer() {
       className="deck-viewer fixed inset-0 z-[60] flex flex-col bg-[color:var(--ibd-gray)]"
     >
       {scale !== null && (
-        <DeckProgressBar current={current} total={ENHANCESOFT_SLIDE_COUNT} />
+        <div className={deckReady ? undefined : "invisible"}>
+          <DeckProgressBar current={current} total={ENHANCESOFT_SLIDE_COUNT} />
+        </div>
       )}
       <div className="relative flex flex-1 items-center justify-center overflow-hidden">
-        {scale === null ? (
-          <DeckLoadingScreen />
-        ) : (
+        {scale !== null && deckReady && (
           <div
             className="deck-stage-host"
             style={{
@@ -152,7 +192,7 @@ export function EnhancesoftViewer() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                   className="deck-stage h-full w-full rounded-lg shadow-[0_24px_80px_-20px_rgba(13,15,26,0.18)]"
                 >
                   {renderEnhancesoftSlide(current)}
@@ -166,9 +206,11 @@ export function EnhancesoftViewer() {
       <nav
         ref={navRef}
         aria-label="Proposal navigation"
-        className="flex shrink-0 items-center justify-between gap-4 border-t border-[color:var(--gms-border)] bg-white/95 px-6 py-3 backdrop-blur-xl"
+        className={`es-viewer-nav flex shrink-0 items-center gap-4 border-t border-[color:var(--gms-border)] bg-white/95 px-6 py-3 backdrop-blur-xl ${
+          deckReady ? "" : "pointer-events-none invisible"
+        }`}
       >
-        <div className="flex min-w-0 items-center gap-3">
+        <div className="es-viewer-nav__brand min-w-0">
           <span className="es-footer-brand min-w-0">
             <a
               href="https://www.evolve-link.com/"
@@ -192,44 +234,58 @@ export function EnhancesoftViewer() {
               aria-hidden
             />
           </span>
-          <span className="truncate text-[13px] text-[color:var(--gms-text-muted)]">
-            {slideTitles[current]}
-          </span>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <span className="es-viewer-nav__title">{slideTitles[current]}</span>
+        <div className="es-viewer-nav__controls">
           <button
             type="button"
             onClick={handleDownload}
             disabled={scale === null || downloading}
             aria-label="Download proposal PDF"
-            className="flex h-9 items-center gap-2 rounded-full border border-[color:var(--gms-border)] bg-white px-3 text-[13px] font-medium text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
+            className="es-viewer-nav__download flex h-9 items-center gap-2 rounded-full border border-[color:var(--gms-border)] bg-white px-3 text-[13px] font-medium text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
           >
             <Download className={`h-4 w-4 ${downloading ? "animate-pulse" : ""}`} />
             <span>{downloading ? "Downloading…" : "Download PDF"}</span>
           </button>
-          <button
-            type="button"
-            onClick={prev}
-            disabled={current === 0}
-            aria-label="Previous slide"
-            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <span className="min-w-[72px] text-center text-[13px] tabular-nums text-[color:var(--gms-text-muted)]">
-            {String(current + 1).padStart(2, "0")} / {ENHANCESOFT_SLIDE_COUNT}
-          </span>
-          <button
-            type="button"
-            onClick={next}
-            disabled={current === ENHANCESOFT_SLIDE_COUNT - 1}
-            aria-label="Next slide"
-            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
+          <div className="es-viewer-nav__pager">
+            <button
+              type="button"
+              onClick={prev}
+              disabled={current === 0}
+              aria-label="Previous slide"
+              className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="min-w-[72px] text-center text-[13px] tabular-nums text-[color:var(--gms-text-muted)]">
+              {String(current + 1).padStart(2, "0")} / {ENHANCESOFT_SLIDE_COUNT}
+            </span>
+            <button
+              type="button"
+              onClick={next}
+              disabled={current === ENHANCESOFT_SLIDE_COUNT - 1}
+              aria-label="Next slide"
+              className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--gms-border)] bg-white text-[color:var(--gms-text-muted)] transition hover:border-[color:var(--gms-accent)]/30 hover:bg-[color:var(--ibd-gray)] disabled:opacity-30"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </nav>
+      <AnimatePresence onExitComplete={() => setDeckReady(true)}>
+        {showLoader && (
+          <motion.div
+            key="es-loader"
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-[color:var(--ibd-gray)]"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: LOAD_FADE_S, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <DeckLoadingScreen variant="enhancesoft" className="h-full w-full" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

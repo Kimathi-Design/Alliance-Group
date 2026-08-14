@@ -826,8 +826,8 @@ export function HubSpokeDiagram({
           <Image
             src={ASSETS.brands.motheoLogo}
             alt=""
-            width={3770}
-            height={3290}
+            width={1280}
+            height={1117}
             aria-hidden
             className="h-4 w-auto shrink-0 object-contain"
           />
@@ -851,8 +851,8 @@ export function MotheoEngineStripVisual({
         <Image
           src={ASSETS.brands.motheoLogo}
           alt=""
-          width={3770}
-          height={3290}
+          width={1280}
+          height={1117}
           aria-hidden
           className="motheo-engine-strip__hub-logo h-8 w-auto shrink-0 object-contain"
         />
@@ -1305,8 +1305,8 @@ export function DashboardMockup({
         <Image
           src={ASSETS.brands.motheoLogo}
           alt=""
-          width={3770}
-          height={3290}
+          width={1280}
+          height={1117}
           aria-hidden
           className="dashboard-mockup-visual__hub-logo h-8 w-auto shrink-0 object-contain"
         />

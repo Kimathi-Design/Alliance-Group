@@ -19,6 +19,7 @@ import {
   SLIDE_WIDTH,
   slideTitles,
 } from "@/lib/enhancesoft-deck-content";
+import { proposalCover } from "@/lib/enhancesoft-proposal-content";
 import { ASSETS } from "@/lib/assets";
 import { downloadPdf } from "@/lib/export-deck-pdf";
 import { DeckLoadingScreen } from "@/components/deck/DeckLoadingScreen";
@@ -169,8 +170,24 @@ export function EnhancesoftViewer() {
         className="flex shrink-0 items-center justify-between gap-4 border-t border-[color:var(--gms-border)] bg-white/95 px-6 py-3 backdrop-blur-xl"
       >
         <div className="flex min-w-0 items-center gap-3">
-          <span className="truncate text-[13px] font-semibold tracking-wide text-deck-accent">
-            Brian Kimathi
+          <span className="es-footer-brand min-w-0">
+            <img
+              src={ASSETS.brands.evolveLinkFavicon}
+              alt=""
+              className="es-footer-brand__mark"
+              aria-hidden
+            />
+            <span className="truncate">
+              {proposalCover.preparedBy} |{" "}
+              <a
+                href="https://www.evolve-link.com/"
+                className="es-footer-brand__link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                EVOLVE-LINK
+              </a>
+            </span>
           </span>
           <span className="truncate text-[13px] text-[color:var(--gms-text-muted)]">
             {slideTitles[current]}

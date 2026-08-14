@@ -226,7 +226,7 @@ export function DeckSlideFrame({
               fill
               sizes={`${SLIDE_WIDTH}px`}
               quality={95}
-              // Exact slide-sized JPEGs — skip optimizer re-encode/upscale soft blur
+              // Exact slide-sized WebP — skip optimizer re-encode/upscale soft blur
               unoptimized
               className="pointer-events-none absolute inset-0 z-[1] object-cover"
               priority

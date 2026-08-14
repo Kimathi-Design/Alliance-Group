@@ -50,8 +50,8 @@ export function TechnologyLandscapeVisual() {
             <Image
               src={ASSETS.brands.motheoLogo}
               alt=""
-              width={3770}
-              height={3290}
+              width={1280}
+              height={1117}
               aria-hidden
               className="tech-landscape-visual__hub-motheo"
             />

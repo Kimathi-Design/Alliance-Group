@@ -12,7 +12,7 @@ const SIZES = {
   lg: { px: 28, className: "h-7 w-7" },
 } as const;
 
-/** BWE mark — public/images/brands/bwe-logo.png */
+/** BWE mark — public/images/brands/bwe-logo.webp */
 export function BweMark({ size = "sm", className = "" }: IbdMarkProps) {
   const heights = {
     sm: "h-3.5",
@@ -37,7 +37,7 @@ export function DhlMark(props: IbdMarkProps) {
   return <BweMark {...props} />;
 }
 
-/** IBD mark — public/favicon-ibd.png */
+/** IBD mark — public/images/brands/favicon-ibd.webp */
 export function IbdMark({ size = "sm", className = "" }: IbdMarkProps) {
   const { px, className: sizeClass } = SIZES[size];
 
@@ -53,7 +53,7 @@ export function IbdMark({ size = "sm", className = "" }: IbdMarkProps) {
   );
 }
 
-/** Motheo mark — public/motheo-logo.png */
+/** Motheo mark — public/images/brands/motheo-logo.webp */
 export function MotheoMark({ size = "sm", className = "" }: IbdMarkProps) {
   const heights = {
     sm: "h-5",
@@ -65,8 +65,8 @@ export function MotheoMark({ size = "sm", className = "" }: IbdMarkProps) {
     <Image
       src={ASSETS.brands.motheoLogo}
       alt=""
-      width={3770}
-      height={3290}
+      width={1280}
+      height={1117}
       aria-hidden
       className={`w-auto shrink-0 object-contain ${heights[size]} ${className}`.trim()}
     />
@@ -119,8 +119,8 @@ export function IbdFooterLogo({ className = "" }: { className?: string }) {
     <Image
       src={ASSETS.brands.ibdLogo}
       alt="Infinity Business Dynamics"
-      width={2560}
-      height={424}
+      width={1920}
+      height={318}
       className={`h-8 w-auto shrink-0 object-contain object-left ${className}`.trim()}
     />
   );

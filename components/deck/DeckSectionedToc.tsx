@@ -131,8 +131,8 @@ export function DeckSignoffTaglineLogo({ tagline }: { tagline: string }) {
         <Image
           src={ASSETS.brands.ibdLogo}
           alt="Infinity Business Dynamics"
-          width={2560}
-          height={424}
+          width={1920}
+          height={318}
           className="mt-8 h-auto"
           style={{ width: logoWidth }}
         />

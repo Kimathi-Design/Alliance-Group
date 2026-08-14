@@ -25,24 +25,6 @@ async function waitForServer(url, timeoutMs = 90_000) {
   throw new Error(`Server did not become ready at ${url}`);
 }
 
-async function waitForSlideImages(handle) {
-  await handle.evaluate(async (el) => {
-    const imgs = [...el.querySelectorAll("img")];
-    await Promise.all(
-      imgs.map(
-        (img) =>
-          img.complete
-            ? Promise.resolve()
-            : new Promise((resolve) => {
-                img.onload = () => resolve();
-                img.onerror = () => resolve();
-                setTimeout(resolve, 4000);
-              }),
-      ),
-    );
-  });
-}
-
 let serverProcess;
 if (!process.env.DECK_URL) {
   serverProcess = spawn("npm", ["start", "--", "--port", String(port)], {
@@ -63,52 +45,36 @@ try {
   console.log(`Rendering Enhancesoft proposal from ${printUrl}...`);
   await page.emulateMedia({ media: "screen" });
   await page.goto(printUrl, { waitUntil: "networkidle", timeout: 180_000 });
+  await page.addStyleTag({
+    content:
+      "nextjs-portal, [data-next-badge-root], #__next-build-watcher { display: none !important; }",
+  });
   await page.waitForFunction(() => document.fonts.ready);
   await page.waitForFunction(
     () => document.documentElement.dataset.enhancesoftExport === "true",
   );
-  await page.evaluate(() => {
-    document.querySelectorAll("img").forEach((img) => {
-      img.loading = "eager";
-    });
-  });
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(2500);
 
   const slideLocators = page.locator(".es-print-slide, .deck-print-slide");
   const slideCount = await slideLocators.count();
   if (slideCount === 0) {
     throw new Error("No .es-print-slide elements found on /enhancesoft/print");
   }
-  console.log(`Capturing ${slideCount} slides...`);
+  console.log(`Capturing ${slideCount} slides as screen screenshots...`);
 
   const pdfDoc = await PDFDocument.create();
 
   for (let i = 0; i < slideCount; i++) {
     const slide = slideLocators.nth(i);
-    await slide.evaluate((el) => el.scrollIntoView({ block: "start" }));
-    const target = slide.locator("section.deck-slide").first();
-    const handle = (await target.count()) > 0 ? target : slide;
-    await waitForSlideImages(handle);
-    await page.waitForTimeout(i === 0 ? 400 : 60);
-    const box = await handle.boundingBox();
-    if (!box) {
-      throw new Error(`Slide ${i + 1} has no bounding box`);
-    }
-    const x = Math.max(0, Math.round(box.x));
-    const y = Math.max(0, Math.round(box.y));
-    const clip = {
-      x,
-      y,
-      width: Math.min(SLIDE_WIDTH, SLIDE_WIDTH - x),
-      height: Math.min(SLIDE_HEIGHT, SLIDE_HEIGHT - y),
-    };
+    await slide.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(i === 0 ? 800 : 120);
 
-    const jpgBytes = await page.screenshot({
+    const target = slide.locator("section.deck-slide").first();
+    const hasSlide = (await target.count()) > 0;
+    const jpgBytes = await (hasSlide ? target : slide).screenshot({
       type: "jpeg",
       quality: 95,
       animations: "disabled",
-      caret: "hide",
-      clip,
     });
 
     const image = await pdfDoc.embedJpg(jpgBytes);

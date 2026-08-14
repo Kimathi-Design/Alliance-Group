@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { ASSETS } from "@/lib/assets";
-import { EnhancesoftPrintView } from "@/enhancesoft/EnhancesoftPrintView";
 
 export const metadata: Metadata = {
-  title: "Print — Enhancesoft Proposal",
-  robots: { index: false, follow: false },
   icons: {
     icon: ASSETS.brands.evolveLinkFavicon,
     shortcut: ASSETS.brands.evolveLinkFavicon,
@@ -12,6 +9,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function EnhancesoftPrintPage() {
-  return <EnhancesoftPrintView />;
+export default function EnhancesoftLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return children;
 }
